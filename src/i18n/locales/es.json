@@ -1,9 +1,23 @@
 {
   "home_page": {
-    "title": "Welcome! what would you like to do today?"
+    "title": "¡Bienvenido! ¿Qué te gustaría hacer hoy?"
   },
   "tasks_list": {
-    "loading_message": "Loading tasks...",
-    "error_loading_tasks": "Error loading tasks. Please try again later."
+    "loading_message": "Cargando tareas...",
+    "error_loading_tasks": "Error al cargar las tareas. Inténtalo de nuevo más tarde.",
+    "no_tasks_message": "No se encontraron tareas."
+  },
+  "task_card": {
+    "updating_message": "Actualizando...",
+    "mark_action": "Marcar como {{status}}",
+    "deleting_message": "Eliminando...",
+    "delete_action": "Eliminar",
+    "delete_confirmation": "¿Eliminar {{title}}?"
+  },
+  "status_filters": {
+    "all": "Todos",
+    "pending": "Pendiente",
+    "completed": "Completado",
+    "in_progress": "En Progreso"
   }
 }

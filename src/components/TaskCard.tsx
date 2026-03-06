@@ -1,0 +1,82 @@
+import {
+  Card,
+  Button,
+  Actions,
+  CardTitle,
+  Description,
+  StatusBadge,
+  FlexRowContainer,
+} from "./styles/componentStyles";
+import type { Task } from "../types";
+import { TaskStatus } from "../types";
+import { GET_TASKS } from "../graphql/queries";
+import { useTranslation } from "react-i18next";
+import { useMutation } from "@apollo/client/react";
+import { DELETE_TASK, UPDATE_TASK } from "../graphql/mutations";
+
+interface TaskItemProps {
+  task: Task;
+}
+
+export default function TaskCard({ task }: TaskItemProps) {
+  const { t } = useTranslation();
+  const [deleteTask, { loading: deleting }] = useMutation(DELETE_TASK, {
+    variables: { id: task.id },
+    refetchQueries: [{ query: GET_TASKS }],
+  });
+  const [updateTaskStatus, { loading: updating }] = useMutation(UPDATE_TASK);
+
+  const handleStatusChange = (newStatus: string) => {
+    updateTaskStatus({
+      variables: { id: task.id, status: newStatus },
+      refetchQueries: [{ query: GET_TASKS }],
+    });
+  };
+
+  const handleDelete = () => {
+    if (
+      window.confirm(t("task_card.delete_confirmation", { title: task.title }))
+    ) {
+      deleteTask();
+    }
+  };
+
+  const nextStatus =
+    task.status === TaskStatus.PENDING
+      ? TaskStatus.IN_PROGRESS
+      : task.status === TaskStatus.IN_PROGRESS
+        ? TaskStatus.COMPLETED
+        : null;
+
+  return (
+    <Card>
+      <FlexRowContainer $justify="space-between">
+        <CardTitle>{task.title}</CardTitle>
+        <StatusBadge $status={task.status}>
+          {task.status.replace("_", " ")}
+        </StatusBadge>
+      </FlexRowContainer>
+
+      <Description>{task.description}</Description>
+      <Actions>
+        {nextStatus && (
+          <Button
+            onClick={() => handleStatusChange(nextStatus)}
+            disabled={updating}
+          >
+            {updating
+              ? t("task_card.updating_message")
+              : t("task_card.mark_action", {
+                  status: nextStatus.replace("_", " "),
+                })}
+          </Button>
+        )}
+        <Button onClick={handleDelete} disabled={deleting}>
+          {deleting
+            ? t("task_card.deleting_message")
+            : t("task_card.delete_action")}
+        </Button>
+      </Actions>
+    </Card>
+  );
+}

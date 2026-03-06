@@ -1,9 +1,23 @@
 {
   "home_page": {
-    "title": "Welcome! what would you like to do today?"
+    "title": "ようこそ！今日は何をしますか？"
   },
   "tasks_list": {
-    "loading_message": "Loading tasks...",
-    "error_loading_tasks": "Error loading tasks. Please try again later."
+    "loading_message": "タスクを読み込み中...",
+    "error_loading_tasks": "タスクの読み込みに失敗しました。後でもう一度お試しください。",
+    "no_tasks_message": "タスクが見つかりません。"
+  },
+  "task_card": {
+    "updating_message": "更新中...",
+    "mark_action": "{{status}}に変更",
+    "deleting_message": "削除中...",
+    "delete_action": "削除",
+    "delete_confirmation": "「{{title}}」を削除しますか？"
+  },
+  "status_filters": {
+    "all": "すべて",
+    "pending": "未着手",
+    "completed": "完了",
+    "in_progress": "進行中"
   }
 }

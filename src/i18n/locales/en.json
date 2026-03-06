@@ -4,6 +4,20 @@
   },
   "tasks_list": {
     "loading_message": "Loading tasks...",
-    "error_loading_tasks": "Error loading tasks. Please try again later."
+    "error_loading_tasks": "Error loading tasks. Please try again later.",
+    "no_tasks_message": "No tasks found."
+  },
+  "task_card": {
+    "updating_message": "Updating...",
+    "mark_action": "Mark as {{status}}",
+    "deleting_message": "Deleting...",
+    "delete_action": "Delete",
+    "delete_confirmation": "Delete {{title}}?"
+  },
+  "status_filters": {
+    "all": "All",
+    "pending": "Pending",
+    "completed": "Completed",
+    "in_progress": "In Progress"
   }
 }
