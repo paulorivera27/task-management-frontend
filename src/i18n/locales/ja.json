@@ -1,0 +1,9 @@
+{
+  "home_page": {
+    "title": "Welcome! what would you like to do today?"
+  },
+  "tasks_list": {
+    "loading_message": "Loading tasks...",
+    "error_loading_tasks": "Error loading tasks. Please try again later."
+  }
+}
