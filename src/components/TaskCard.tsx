@@ -14,6 +14,7 @@ import { GET_TASKS } from "../graphql/queries";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@apollo/client/react";
 import { DELETE_TASK, UPDATE_TASK } from "../graphql/mutations";
+import { statusTranslationKey } from "../utils/constants";
 
 interface TaskItemProps {
   task: Task;
@@ -56,7 +57,7 @@ export default function TaskCard({ task }: TaskItemProps) {
       <FlexRowContainer $justify="space-between">
         <CardTitle>{task.title}</CardTitle>
         <StatusBadge $status={task.status}>
-          {task.status.replace("_", " ")}
+          {t(statusTranslationKey[task.status]).toLocaleUpperCase()}
         </StatusBadge>
       </FlexRowContainer>
 
@@ -74,7 +75,9 @@ export default function TaskCard({ task }: TaskItemProps) {
             {updating
               ? t("task_card.updating_message")
               : t("task_card.mark_action", {
-                  status: nextStatus.replace("_", " "),
+                  status: t(
+                    statusTranslationKey[nextStatus],
+                  ).toLocaleLowerCase(),
                 })}
           </Button>
         )}
