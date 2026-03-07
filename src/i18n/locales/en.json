@@ -13,7 +13,8 @@
     "mark_action": "Mark as {{status}}",
     "deleting_message": "Deleting...",
     "delete_action": "Delete",
-    "delete_confirmation": "Delete {{title}}?"
+    "delete_confirmation": "Delete {{title}}?",
+    "edit_action": "Edit"
   },
   "status_filters": {
     "all": "All",
@@ -23,6 +24,10 @@
   },
   "tasks_create": {
     "title": "Create New Task"
+  },
+  "tasks_edit": {
+    "title": "Edit Task",
+    "task_not_found": "Task not found."
   },
   "task_form": {
     "title_placeholder": "Task Title",

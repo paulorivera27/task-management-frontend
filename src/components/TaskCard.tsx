@@ -9,6 +9,7 @@ import {
 } from "./styles/componentStyles";
 import type { Task } from "../types";
 import { TaskStatus } from "../types";
+import { useNavigate } from "react-router-dom";
 import { GET_TASKS } from "../graphql/queries";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@apollo/client/react";
@@ -20,6 +21,8 @@ interface TaskItemProps {
 
 export default function TaskCard({ task }: TaskItemProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
   const [deleteTask, { loading: deleting }] = useMutation(DELETE_TASK, {
     variables: { id: task.id },
     refetchQueries: [{ query: GET_TASKS }],
@@ -59,6 +62,10 @@ export default function TaskCard({ task }: TaskItemProps) {
 
       <Description>{task.description}</Description>
       <Actions>
+        <Button onClick={() => navigate(`/tasks/${task.id}/edit`)}>
+          {t("task_card.edit_action")}
+        </Button>
+
         {nextStatus && (
           <Button
             onClick={() => handleStatusChange(nextStatus)}

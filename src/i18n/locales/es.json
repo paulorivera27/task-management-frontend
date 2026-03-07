@@ -13,7 +13,8 @@
     "mark_action": "Marcar como {{status}}",
     "deleting_message": "Eliminando...",
     "delete_action": "Eliminar",
-    "delete_confirmation": "¿Eliminar {{title}}?"
+    "delete_confirmation": "¿Eliminar {{title}}?",
+    "edit_action": "Editar"
   },
   "status_filters": {
     "all": "Todos",
@@ -23,6 +24,10 @@
   },
   "tasks_create": {
     "title": "Crear Nueva Tarea"
+  },
+  "tasks_edit": {
+    "title": "Editar Tarea",
+    "task_not_found": "Tarea no encontrada."
   },
   "task_form": {
     "title_placeholder": "Título de la Tarea",

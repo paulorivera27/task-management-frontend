@@ -13,7 +13,8 @@
     "mark_action": "{{status}}に変更",
     "deleting_message": "削除中...",
     "delete_action": "削除",
-    "delete_confirmation": "「{{title}}」を削除しますか？"
+    "delete_confirmation": "「{{title}}」を削除しますか？",
+    "edit_action": "編集"
   },
   "status_filters": {
     "all": "すべて",
@@ -23,6 +24,10 @@
   },
   "tasks_create": {
     "title": "新しいタスクを作成"
+  },
+  "tasks_edit": {
+    "title": "タスクを編集",
+    "task_not_found": "タスクが見つかりません。"
   },
   "task_form": {
     "title_placeholder": "タスクのタイトル",

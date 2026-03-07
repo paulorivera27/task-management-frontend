@@ -1,8 +1,8 @@
 import TaskCard from "./TaskCard";
 import type { Task } from "../types";
-import { sleepyTaskImage } from "../assets";
+import EmptyState from "./EmptyState";
 import { useTranslation } from "react-i18next";
-import { NoTasksContainer, SecondaryContainer } from "./styles/componentStyles";
+import { SecondaryContainer } from "./styles/componentStyles";
 
 export default function TaskList({
   tasks,
@@ -22,10 +22,7 @@ export default function TaskList({
       ) : error ? (
         <p>{t("tasks_list.error_loading_tasks", { message: error.message })}</p>
       ) : !tasks.length ? (
-        <NoTasksContainer>
-          <img src={sleepyTaskImage} alt="No tasks" width={120} />
-          <p>{t("tasks_list.no_tasks_message")}</p>
-        </NoTasksContainer>
+        <EmptyState isTaskList={true} />
       ) : (
         tasks.map((task) => <TaskCard key={task.id} task={task} />)
       )}
