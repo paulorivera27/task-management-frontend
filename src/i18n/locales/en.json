@@ -1,6 +1,7 @@
 {
   "home_page": {
-    "title": "Welcome! what would you like to do today?"
+    "title": "Welcome! what would you like to do today?",
+    "create_button": "Create Task"
   },
   "tasks_list": {
     "loading_message": "Loading tasks...",
@@ -19,5 +20,15 @@
     "pending": "Pending",
     "completed": "Completed",
     "in_progress": "In Progress"
+  },
+  "tasks_create": {
+    "title": "Create New Task"
+  },
+  "task_form": {
+    "title_placeholder": "Task Title",
+    "description_placeholder": "Task Description",
+    "saving": "Saving...",
+    "update_button": "Update Task",
+    "create_button": "Create Task"
   }
 }

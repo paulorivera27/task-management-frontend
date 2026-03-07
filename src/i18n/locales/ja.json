@@ -1,6 +1,7 @@
 {
   "home_page": {
-    "title": "ようこそ！今日は何をしますか？"
+    "title": "ようこそ！今日は何をしますか？",
+    "create_button": "タスクを作成"
   },
   "tasks_list": {
     "loading_message": "タスクを読み込み中...",
@@ -19,5 +20,15 @@
     "pending": "未着手",
     "completed": "完了",
     "in_progress": "進行中"
+  },
+  "tasks_create": {
+    "title": "新しいタスクを作成"
+  },
+  "task_form": {
+    "title_placeholder": "タスクのタイトル",
+    "description_placeholder": "タスクの説明",
+    "saving": "保存中...",
+    "update_button": "タスクを更新",
+    "create_button": "タスクを作成"
   }
 }

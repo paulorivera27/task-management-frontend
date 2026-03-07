@@ -1,6 +1,7 @@
 {
   "home_page": {
-    "title": "¡Bienvenido! ¿Qué te gustaría hacer hoy?"
+    "title": "¡Bienvenido! ¿Qué te gustaría hacer hoy?",
+    "create_button": "Crear Tarea"
   },
   "tasks_list": {
     "loading_message": "Cargando tareas...",
@@ -19,5 +20,15 @@
     "pending": "Pendiente",
     "completed": "Completado",
     "in_progress": "En Progreso"
+  },
+  "tasks_create": {
+    "title": "Crear Nueva Tarea"
+  },
+  "task_form": {
+    "title_placeholder": "Título de la Tarea",
+    "description_placeholder": "Descripción de la Tarea",
+    "saving": "Guardando...",
+    "update_button": "Actualizar Tarea",
+    "create_button": "Crear Tarea"
   }
 }

@@ -99,11 +99,15 @@ export const Button = styled.button`
   }
 `;
 
-export const FlexRowContainer = styled.div<{ $justify?: string }>`
+export const FlexRowContainer = styled.div<{
+  $justify?: string;
+  $alignItems?: string;
+  $background?: string;
+}>`
   gap: 12px;
   display: flex;
-  background: #fff;
-  align-items: center;
+  background: ${({ $background }) => $background ?? "#fff"};
+  align-items: ${({ $alignItems }) => $alignItems ?? "center"};
   justify-content: ${({ $justify }) => $justify ?? "flex-start"};
 `;
 
@@ -131,3 +135,62 @@ export const FilterButton = styled.button<{ $active: boolean }>`
 `;
 
 // end of the task filter styles.
+
+// start of the task form styles.
+
+export const FlexColumnContainer = styled.div<{ $align?: string }>`
+  display: flex;
+  flex-direction: column;
+  align-items: ${({ $align }) => $align ?? "flex-start"};
+  gap: 12px;
+`;
+
+export const Input = styled.input`
+  outline: none;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  border: solid 1px #6200ee;
+
+  &:focus {
+    border-color: #6200ee;
+    box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.15);
+  }
+`;
+
+export const TextArea = styled.textarea`
+  outline: none;
+  resize: vertical;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  border: solid 1px #6200ee;
+
+  &:focus {
+    border-color: #6200ee;
+    box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.15);
+  }
+`;
+
+export const Select = styled.select`
+  outline: none;
+  background: #fff;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  border: solid 1px #6200ee;
+
+  &:focus {
+    border-color: #6200ee;
+    box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.15);
+  }
+`;
+
+export const ErrorText = styled.p`
+  margin: 0;
+  color: #d32f2f;
+  font-size: 0.875rem;
+`;
+
+// end of the task form styles.
