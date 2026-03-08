@@ -8,20 +8,9 @@ import {
   SecondaryContainer,
   FlexColumnContainer,
 } from "./styles/componentStyles";
-import type { Task } from "../types";
+import type { TaskFormProps } from "../types";
 import { TaskStatus } from "../types";
 import { useTranslation } from "react-i18next";
-
-interface TaskFormProps {
-  initialValues?: Pick<Task, "title" | "description" | "status">;
-  onSubmit: (values: {
-    title: string;
-    description: string;
-    status: string;
-  }) => void;
-  loading: boolean;
-  error?: string;
-}
 
 export default function TaskForm({
   error,

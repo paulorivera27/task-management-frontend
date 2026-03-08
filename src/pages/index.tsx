@@ -1,5 +1,4 @@
 import { useState } from "react";
-import type { Task } from "../types";
 import TaskList from "../components/TaskList";
 import {
   Button,
@@ -12,21 +11,32 @@ import { useNavigate } from "react-router-dom";
 import { GET_TASKS } from "../graphql/queries";
 import { useQuery } from "@apollo/client/react";
 import TaskFilter from "../components/TaskFilter";
-
-interface GetTasksData {
-  tasks: Task[];
-}
+import Pagination from "../components/Pagination";
+import type { GetTasksData, Task } from "../types";
 
 export default function IndexPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const PER_PAGE = 10;
+  const [page, setPage] = useState(1);
   const [filter, setFilter] = useState<string | null>(null);
 
   const { data, loading, error } = useQuery<GetTasksData>(GET_TASKS, {
-    variables: filter ? { status: filter } : {},
+    fetchPolicy: "cache-and-network",
+    variables: {
+      limit: PER_PAGE,
+      offset: (page - 1) * PER_PAGE,
+      ...(filter ? { status: filter } : {}),
+    },
   });
 
-  const tasks: Task[] = data?.tasks ?? [];
+  const handleFilterChange = (status: string | null) => {
+    setFilter(status);
+    setPage(1);
+  };
+
+  const tasks: Task[] = data?.tasks.tasks ?? [];
+  const totalPages = Math.ceil((data?.tasks.totalCount ?? 0) / PER_PAGE);
 
   return (
     <MainContainer>
@@ -37,13 +47,21 @@ export default function IndexPage() {
         $justify="space-between"
         $background="transparent"
       >
-        <TaskFilter current={filter} onChange={setFilter} />
+        <TaskFilter current={filter} onChange={handleFilterChange} />
         <Button onClick={() => navigate("/tasks/new")}>
           {t("home_page.create_button")}
         </Button>
       </FlexRowContainer>
 
       <TaskList tasks={tasks} loading={loading} error={error} />
+
+      {totalPages > 1 && (
+        <Pagination
+          onPageChange={setPage}
+          totalPages={totalPages}
+          currentPage={page}
+        />
+      )}
     </MainContainer>
   );
 }

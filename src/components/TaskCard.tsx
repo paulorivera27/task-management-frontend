@@ -7,18 +7,13 @@ import {
   StatusBadge,
   FlexRowContainer,
 } from "./styles/componentStyles";
-import type { Task } from "../types";
+import type { TaskItemProps } from "../types";
 import { TaskStatus } from "../types";
 import { useNavigate } from "react-router-dom";
-import { GET_TASKS } from "../graphql/queries";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@apollo/client/react";
 import { DELETE_TASK, UPDATE_TASK } from "../graphql/mutations";
 import { statusTranslationKey } from "../utils/constants";
-
-interface TaskItemProps {
-  task: Task;
-}
 
 export default function TaskCard({ task }: TaskItemProps) {
   const { t } = useTranslation();
@@ -26,14 +21,18 @@ export default function TaskCard({ task }: TaskItemProps) {
 
   const [deleteTask, { loading: deleting }] = useMutation(DELETE_TASK, {
     variables: { id: task.id },
-    refetchQueries: [{ query: GET_TASKS }],
+    refetchQueries: ["GetTasks"],
+    update: (cache) => {
+      cache.evict({ id: cache.identify({ __typename: "Task", id: task.id }) });
+      cache.gc();
+    },
   });
   const [updateTaskStatus, { loading: updating }] = useMutation(UPDATE_TASK);
 
   const handleStatusChange = (newStatus: string) => {
     updateTaskStatus({
       variables: { id: task.id, status: newStatus },
-      refetchQueries: [{ query: GET_TASKS }],
+      refetchQueries: ["GetTasks"],
     });
   };
 

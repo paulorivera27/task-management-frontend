@@ -1,11 +1,7 @@
 import { filters } from "../utils/constants";
 import { useTranslation } from "react-i18next";
+import type { TaskFilterProps } from "../types";
 import { FilterBar, FilterButton } from "./styles/componentStyles";
-
-interface TaskFilterProps {
-  current: string | null;
-  onChange: (status: string | null) => void;
-}
 
 export default function TaskFilter({ current, onChange }: TaskFilterProps) {
   const { t } = useTranslation();

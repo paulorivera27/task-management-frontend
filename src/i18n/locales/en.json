@@ -35,5 +35,9 @@
     "saving": "Saving...",
     "update_button": "Update Task",
     "create_button": "Create Task"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
   }
 }

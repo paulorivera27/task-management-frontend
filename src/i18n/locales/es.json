@@ -35,5 +35,9 @@
     "saving": "Guardando...",
     "update_button": "Actualizar Tarea",
     "create_button": "Crear Tarea"
+  },
+  "pagination": {
+    "previous": "Anterior",
+    "next": "Siguiente"
   }
 }

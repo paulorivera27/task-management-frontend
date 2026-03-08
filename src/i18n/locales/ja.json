@@ -35,5 +35,9 @@
     "saving": "保存中...",
     "update_button": "タスクを更新",
     "create_button": "タスクを作成"
+  },
+  "pagination": {
+    "previous": "前へ",
+    "next": "次へ"
   }
 }
