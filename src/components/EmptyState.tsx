@@ -1,7 +1,7 @@
 import { sleepyTaskImage } from "../assets";
 import { useTranslation } from "react-i18next";
 import type { EmptyStateProps } from "../types";
-import { NoTasksContainer } from "./styles/componentStyles";
+import { NoTasksContainer } from "./styles/taskList";
 
 export default function EmptyState({ isTaskList }: EmptyStateProps) {
   const { t } = useTranslation();

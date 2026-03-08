@@ -1,11 +1,5 @@
 import { useState } from "react";
 import TaskList from "../components/TaskList";
-import {
-  Button,
-  PageTitle,
-  MainContainer,
-  FlexRowContainer,
-} from "../components/styles/componentStyles";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { GET_TASKS } from "../graphql/queries";
@@ -13,6 +7,8 @@ import { useQuery } from "@apollo/client/react";
 import TaskFilter from "../components/TaskFilter";
 import Pagination from "../components/Pagination";
 import type { GetTasksData, Task } from "../types";
+import { Button, FlexRowContainer } from "../components/styles/shared";
+import { MainContainer, PageTitle } from "../components/styles/taskList";
 
 export default function IndexPage() {
   const { t } = useTranslation();

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { CREATE_TASK } from "../graphql/mutations";
 import { useMutation } from "@apollo/client/react";
-import { MainContainer, PageTitle } from "../components/styles/componentStyles";
+import { MainContainer, PageTitle } from "../components/styles/taskList";
 
 export default function TaskCreatePage() {
   const { t } = useTranslation();

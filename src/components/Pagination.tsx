@@ -1,8 +1,8 @@
 import {
-  Button,
   PaginationButton,
   PaginationContainer,
-} from "./styles/componentStyles";
+} from "./styles/paginationComponent";
+import { Button } from "./styles/shared";
 import { useTranslation } from "react-i18next";
 
 export default function Pagination({

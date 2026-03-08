@@ -1,19 +1,18 @@
 import {
   Card,
-  Button,
   Actions,
   CardTitle,
-  Description,
   StatusBadge,
-  FlexRowContainer,
-} from "./styles/componentStyles";
-import type { TaskItemProps } from "../types";
+  Description,
+} from "./styles/taskCard";
 import { TaskStatus } from "../types";
+import type { TaskItemProps } from "../types";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@apollo/client/react";
-import { DELETE_TASK, UPDATE_TASK } from "../graphql/mutations";
 import { statusTranslationKey } from "../utils/constants";
+import { Button, FlexRowContainer } from "./styles/shared";
+import { DELETE_TASK, UPDATE_TASK } from "../graphql/mutations";
 
 export default function TaskCard({ task }: TaskItemProps) {
   const { t } = useTranslation();

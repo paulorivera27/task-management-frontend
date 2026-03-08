@@ -1,16 +1,16 @@
-import { useState } from "react";
 import {
+  ErrorText,
+  FlexColumnContainer,
   Input,
   Select,
-  Button,
   TextArea,
-  ErrorText,
-  SecondaryContainer,
-  FlexColumnContainer,
-} from "./styles/componentStyles";
-import type { TaskFormProps } from "../types";
+} from "./styles/taskForm";
+import { useState } from "react";
 import { TaskStatus } from "../types";
+import { Button } from "./styles/shared";
+import type { TaskFormProps } from "../types";
 import { useTranslation } from "react-i18next";
+import { SecondaryContainer } from "./styles/taskList";
 
 export default function TaskForm({
   error,

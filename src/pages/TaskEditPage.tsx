@@ -1,13 +1,13 @@
 import type { GetTaskData } from "../types";
 import TaskForm from "../components/TaskForm";
+import { GET_TASK } from "../graphql/queries";
 import { useTranslation } from "react-i18next";
 import EmptyState from "../components/EmptyState";
 import { UPDATE_TASK } from "../graphql/mutations";
-import { GET_TASK } from "../graphql/queries";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client/react";
 import LoadingComponent from "../components/LoadingComponent";
-import { PageTitle, MainContainer } from "../components/styles/componentStyles";
+import { MainContainer, PageTitle } from "../components/styles/taskList";
 
 export default function TaskEditPage() {
   const { t } = useTranslation();

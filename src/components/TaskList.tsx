@@ -2,7 +2,7 @@ import TaskCard from "./TaskCard";
 import type { Task } from "../types";
 import EmptyState from "./EmptyState";
 import { useTranslation } from "react-i18next";
-import { SecondaryContainer } from "./styles/componentStyles";
+import { SecondaryContainer } from "./styles/taskList";
 
 export default function TaskList({
   tasks,
