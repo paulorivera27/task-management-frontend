@@ -40,6 +40,9 @@
     "previous": "前へ",
     "next": "次へ"
   },
+  "nav": {
+    "logout": "ログアウト"
+  },
   "auth": {
     "sign_in_title": "ログイン",
     "sign_up_title": "新規登録",

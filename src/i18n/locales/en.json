@@ -40,6 +40,9 @@
     "previous": "Previous",
     "next": "Next"
   },
+  "nav": {
+    "logout": "Log out"
+  },
   "auth": {
     "sign_in_title": "Sign In",
     "sign_up_title": "Sign Up",

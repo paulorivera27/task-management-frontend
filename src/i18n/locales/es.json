@@ -40,6 +40,9 @@
     "previous": "Anterior",
     "next": "Siguiente"
   },
+  "nav": {
+    "logout": "Cerrar sesión"
+  },
   "auth": {
     "sign_in_title": "Iniciar Sesión",
     "sign_up_title": "Registrarse",

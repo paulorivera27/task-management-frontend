@@ -17,9 +17,10 @@ import { Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
 import { useMutation } from "@apollo/client/react";
-import { Button } from "../components/styles/shared";
 import type { SignInData, SignUpData } from "../types";
 import { SIGN_IN, SIGN_UP } from "../graphql/mutations";
+import LanguageSwitcher from "../components/LanguageSwitcher";
+import { Button, FlexRowContainer } from "../components/styles/shared";
 
 export default function LoginPage() {
   const { t } = useTranslation();
@@ -76,6 +77,10 @@ export default function LoginPage() {
 
   return (
     <MainContainer>
+      <FlexRowContainer $justify="flex-end" $background="transparent">
+        <LanguageSwitcher />
+      </FlexRowContainer>
+
       <PageTitle>
         {isSignUp ? t("auth.sign_up_title") : t("auth.sign_in_title")}
       </PageTitle>
