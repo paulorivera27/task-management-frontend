@@ -39,5 +39,19 @@
   "pagination": {
     "previous": "Previous",
     "next": "Next"
+  },
+  "auth": {
+    "sign_in_title": "Sign In",
+    "sign_up_title": "Sign Up",
+    "email_placeholder": "Email",
+    "password_placeholder": "Password",
+    "sign_in_button": "Sign In",
+    "sign_up_button": "Sign Up",
+    "loading": "Loading...",
+    "no_account": "Don't have an account?",
+    "has_account": "Already have an account?",
+    "sign_in_link": "Sign in",
+    "sign_up_link": "Sign up",
+    "generic_error": "Something went wrong. Please try again."
   }
 }

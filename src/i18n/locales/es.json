@@ -39,5 +39,19 @@
   "pagination": {
     "previous": "Anterior",
     "next": "Siguiente"
+  },
+  "auth": {
+    "sign_in_title": "Iniciar Sesión",
+    "sign_up_title": "Registrarse",
+    "email_placeholder": "Correo electrónico",
+    "password_placeholder": "Contraseña",
+    "sign_in_button": "Iniciar Sesión",
+    "sign_up_button": "Registrarse",
+    "loading": "Cargando...",
+    "no_account": "¿No tienes una cuenta?",
+    "has_account": "¿Ya tienes una cuenta?",
+    "sign_in_link": "Inicia sesión",
+    "sign_up_link": "Regístrate",
+    "generic_error": "Algo salió mal. Por favor, inténtalo de nuevo."
   }
 }

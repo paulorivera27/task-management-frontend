@@ -51,3 +51,34 @@ export interface TaskFormProps {
   loading: boolean;
   error?: string;
 }
+
+export interface User {
+  id: string;
+  email: string;
+}
+
+export interface AuthPayload {
+  token: string | null;
+  user: User | null;
+  errors: string[];
+}
+
+export interface SignInData {
+  signIn: AuthPayload;
+}
+
+export interface SignUpData {
+  signUp: AuthPayload;
+}
+
+export interface CurrentUserData {
+  currentUser: User;
+}
+
+export interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  isAuthenticated: boolean;
+  login: (token: string, user: User) => void;
+  logout: () => void;
+}
