@@ -1,28 +1,20 @@
-import {
-  useState,
-  useEffect,
-  useContext,
-  createContext,
-  type ReactNode,
-} from "react";
+import { AuthContext } from "./useAuth";
 import { CURRENT_USER } from "../graphql/queries";
+import type { User, CurrentUserData } from "../types";
 import { useApolloClient } from "@apollo/client/react";
-import type { User, CurrentUserData, AuthContextType } from "../types";
+import { useState, useEffect, useCallback, type ReactNode } from "react";
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const hasToken = () => !!localStorage.getItem("token");
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const client = useApolloClient();
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [ready, setReady] = useState(!hasToken());
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    if (!hasToken()) return;
 
-    if (!token) {
-      setLoading(false);
-      return;
-    }
+    let cancelled = false;
 
     client
       .query<CurrentUserData>({
@@ -30,41 +22,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         fetchPolicy: "network-only",
       })
       .then(({ data }) => {
-        setUser(data?.currentUser ?? null);
+        if (!cancelled) setUser(data?.currentUser ?? null);
       })
       .catch(() => {
-        localStorage.removeItem("token");
-        setUser(null);
+        if (!cancelled) {
+          localStorage.removeItem("token");
+          setUser(null);
+        }
       })
       .finally(() => {
-        setLoading(false);
+        if (!cancelled) setReady(true);
       });
+
+    return () => {
+      cancelled = true;
+    };
   }, [client]);
 
-  const login = (token: string, user: User) => {
+  const login = useCallback((token: string, newUser: User) => {
     localStorage.setItem("token", token);
-    setUser(user);
-  };
+    setUser(newUser);
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem("token");
     setUser(null);
     client.resetStore();
-  };
+  }, [client]);
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, isAuthenticated: !!user, login, logout }}
+      value={{ user, loading: !ready, isAuthenticated: !!user, login, logout }}
     >
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
 }

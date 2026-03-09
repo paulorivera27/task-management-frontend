@@ -14,8 +14,8 @@ import {
   SignUpSignInContainer,
 } from "../components/styles/LoginPage";
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/useAuth";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../context/AuthContext";
 import { useMutation } from "@apollo/client/react";
 import type { SignInData, SignUpData } from "../types";
 import { SIGN_IN, SIGN_UP } from "../graphql/mutations";
