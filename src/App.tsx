@@ -1,6 +1,7 @@
 import client from "./lib/apollo";
 import TaskList from "./pages/index";
 import LoginPage from "./pages/LoginPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import TaskEditPage from "./pages/TaskEditPage";
 import TaskCreatePage from "./pages/TaskCreatePage";
 import { AuthProvider } from "./context/AuthContext";
@@ -19,6 +20,7 @@ function App() {
               <Route path="/" element={<TaskList />} />
               <Route path="/tasks/new" element={<TaskCreatePage />} />
               <Route path="/tasks/:id/edit" element={<TaskEditPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

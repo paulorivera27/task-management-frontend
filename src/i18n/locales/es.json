@@ -40,6 +40,11 @@
     "previous": "Anterior",
     "next": "Siguiente"
   },
+  "not_found": {
+    "title": "Página no encontrada",
+    "message": "La página que buscas no existe.",
+    "go_home": "Ir al inicio"
+  },
   "nav": {
     "logout": "Cerrar sesión"
   },
