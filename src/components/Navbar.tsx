@@ -9,8 +9,8 @@ export default function Navbar() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate("/login");
   };
 

@@ -1,33 +1,25 @@
+import {
+  setAccessToken,
+  refreshSession,
+  logoutFromServer,
+} from "../lib/apollo";
+import type { User } from "../types";
 import { AuthContext } from "./useAuth";
-import { CURRENT_USER } from "../graphql/queries";
-import type { User, CurrentUserData } from "../types";
 import { useApolloClient } from "@apollo/client/react";
 import { useState, useEffect, useCallback, type ReactNode } from "react";
-
-const hasToken = () => !!localStorage.getItem("token");
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const client = useApolloClient();
   const [user, setUser] = useState<User | null>(null);
-  const [ready, setReady] = useState(!hasToken());
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!hasToken()) return;
-
     let cancelled = false;
 
-    client
-      .query<CurrentUserData>({
-        query: CURRENT_USER,
-        fetchPolicy: "network-only",
-      })
-      .then(({ data }) => {
-        if (!cancelled) setUser(data?.currentUser ?? null);
-      })
-      .catch(() => {
-        if (!cancelled) {
-          localStorage.removeItem("token");
-          setUser(null);
+    refreshSession()
+      .then((session) => {
+        if (!cancelled && session) {
+          setUser(session.user);
         }
       })
       .finally(() => {
@@ -37,15 +29,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, [client]);
+  }, []);
 
   const login = useCallback((token: string, newUser: User) => {
-    localStorage.setItem("token", token);
+    setAccessToken(token);
     setUser(newUser);
   }, []);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem("token");
+  const logout = useCallback(async () => {
+    await logoutFromServer();
+    setAccessToken(null);
     setUser(null);
     client.resetStore();
   }, [client]);

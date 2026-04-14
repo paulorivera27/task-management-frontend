@@ -80,5 +80,5 @@ export interface AuthContextType {
   loading: boolean;
   isAuthenticated: boolean;
   login: (token: string, user: User) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
 }

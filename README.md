@@ -8,18 +8,18 @@ This is the **frontend** repository. The backend lives at [task-management-api](
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | React 19 |
-| Language | TypeScript 5.9 |
-| Build Tool | Vite 7 |
-| GraphQL Client | Apollo Client 4 |
-| Routing | React Router 7 |
-| Styling | styled-components 6 |
-| i18n | i18next (English, Spanish, Japanese) |
-| Linting | ESLint 9 |
-| CI/CD | GitHub Actions (lint, typecheck, build, Docker) |
-| Deploy | Docker (Node build + nginx server) |
+| Layer          | Technology                                      |
+| -------------- | ----------------------------------------------- |
+| Framework      | React 19                                        |
+| Language       | TypeScript 5.9                                  |
+| Build Tool     | Vite 7                                          |
+| GraphQL Client | Apollo Client 4                                 |
+| Routing        | React Router 7                                  |
+| Styling        | styled-components 6                             |
+| i18n           | i18next (English, Spanish, Japanese)            |
+| Linting        | ESLint 9                                        |
+| CI/CD          | GitHub Actions (lint, typecheck, build, Docker) |
+| Deploy         | Docker (Node build + nginx server)              |
 
 ---
 
@@ -51,6 +51,7 @@ docker compose up --build
 ```
 
 Once the app is running:
+
 - **Frontend:** http://localhost:3000
 - **API endpoint:** http://localhost:4000/graphql
 
@@ -61,6 +62,7 @@ Once the app is running:
 To setup the app for development remembre to run the backend API at the following address: `http://localhost:4000/graphql`.
 
 **Prerequisites:**
+
 - Node.js 22
 - npm
 
@@ -91,8 +93,8 @@ Copy `.env.example` to `.env`:
 cp .env.example .env
 ```
 
-| Variable | Default | Description |
-|----------|---------|-------------|
+| Variable       | Default                         | Description                                                                                     |
+| -------------- | ------------------------------- | ----------------------------------------------------------------------------------------------- |
 | `VITE_API_URL` | `http://localhost:4000/graphql` | GraphQL API endpoint. Only needed for `npm run dev`. The Docker build uses a hardcoded default. |
 
 ---
@@ -121,11 +123,13 @@ npm run preview
 ## Authentication Flow
 
 1. User signs up or signs in via the login page
-2. The backend returns a JWT token
-3. Token is stored in `localStorage`
-4. Apollo Client attaches the token as `Authorization: Bearer <token>` on every GraphQL request via an auth link
-5. Protected routes redirect to login if no token is present
-6. Logout clears the token and resets the Apollo cache
+2. The backend returns a short-lived JWT access token (with a duration of 15 min) in the response body and sets a long-lived refresh token (for 7 days) as an `HttpOnly` cookie
+3. The access token is stored **in memory from now on**
+4. Apollo Client attaches the access token as `Authorization: Bearer <token>` on every GraphQL request via an auth link
+5. When an access token expires, an Apollo error link automatically calls `POST /auth/refresh` — the browser sends the `HttpOnly` cookie, and the backend returns a fresh access token
+6. On page load, the app attempts a silent refresh to restore the session without re-login
+7. Protected routes redirect to login if no valid session exists
+8. Logout calls `DELETE /auth/logout` to revoke the refresh token server-side, clears the in-memory access token, and resets the Apollo cache
 
 ---
 
@@ -133,10 +137,10 @@ npm run preview
 
 GitHub Actions runs on every push and pull request to `master`:
 
-| Job | What it does |
-|-----|-------------|
-| `lint-and-typecheck` | ESLint + TypeScript type checking |
-| `build` | Production build (`tsc -b && vite build`) |
-| `docker` | Builds the Docker image |
+| Job                  | What it does                              |
+| -------------------- | ----------------------------------------- |
+| `lint-and-typecheck` | ESLint + TypeScript type checking         |
+| `build`              | Production build (`tsc -b && vite build`) |
+| `docker`             | Builds the Docker image                   |
 
 ---
