@@ -2,6 +2,12 @@
   "name": "task-management-frontend",
   "private": true,
   "version": "0.0.0",
+  "description": "A personal task manager: React, TypeScript and Apollo Client on a Rails GraphQL API.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulorivera27/task-management-frontend.git"
+  },
   "type": "module",
   "author": {
     "name": "Paulo Rivera",
