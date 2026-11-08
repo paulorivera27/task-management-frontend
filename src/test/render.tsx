@@ -41,13 +41,13 @@ export function renderRoutes(
 // Renders `ui` at `path`, with a placeholder page at "/" to land on after navigation.
 export function renderPage(
   ui: ReactNode,
-  { path = "/page", ...options }: Options & { path?: string } = {},
+  { path = "/page", route = path, ...options }: Options & { path?: string } = {},
 ) {
   return renderRoutes(
     <>
       <Route path={path} element={ui} />
       <Route path="/" element={<p>home page</p>} />
     </>,
-    { route: path, ...options },
+    { route, ...options },
   );
 }

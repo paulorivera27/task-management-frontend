@@ -1,4 +1,5 @@
 import TaskForm from "../components/TaskForm";
+import { invalidateTasks } from "../lib/cache";
 import { GET_TASK } from "../graphql/queries";
 import { useTranslation } from "react-i18next";
 import EmptyState from "../components/EmptyState";
@@ -34,8 +35,9 @@ export default function TaskEditPage() {
     UpdateTaskData,
     UpdateTaskVariables
   >(UPDATE_TASK, {
-    refetchQueries: ({ data }) =>
-      data?.updateTask.errors.length ? [] : ["GetTasks"],
+    update: (cache, { data }) => {
+      if (!data?.updateTask.errors.length) invalidateTasks(cache);
+    },
   });
 
   const handleSubmit = async (values: TaskFormValues) => {

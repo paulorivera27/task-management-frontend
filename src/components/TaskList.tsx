@@ -1,6 +1,7 @@
 import TaskCard from "./TaskCard";
 import type { Task } from "../types";
 import EmptyState from "./EmptyState";
+import LoadingComponent from "./LoadingComponent";
 import { errorMessageKey } from "../lib/errors";
 import { useTranslation } from "react-i18next";
 import { SecondaryContainer } from "./styles/taskList";
@@ -24,7 +25,7 @@ export default function TaskList({
   return (
     <SecondaryContainer>
       {loading ? (
-        <p>{t("tasks_list.loading_message")}</p>
+        <LoadingComponent />
       ) : error ? (
         <p role="alert">{t(errorText(error))}</p>
       ) : !tasks.length ? (

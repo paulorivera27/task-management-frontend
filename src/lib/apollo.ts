@@ -137,9 +137,12 @@ const client = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
-          tasks: {
-            keyArgs: ["status", "limit", "offset"],
-            merge: false,
+          // Pages replace each other; they are never merged.
+          tasks: { merge: false },
+          // The edit page can open straight from a task already in the cache.
+          task: {
+            read: (existing, { args, toReference }) =>
+              existing ?? toReference({ __typename: "Task", id: args?.id }),
           },
         },
       },

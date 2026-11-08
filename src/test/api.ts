@@ -1,5 +1,6 @@
 import { http, HttpResponse } from "msw";
 import { server } from "./server";
+import type { Task } from "../types";
 
 import { GRAPHQL_URL, REFRESH_URL, LOGOUT_URL } from "./urls";
 
@@ -21,7 +22,7 @@ export const sessionBody = (token = "fresh-token") => ({
   user: { id: 7, email: "user@example.com" },
 });
 
-export const task = (overrides: Record<string, unknown> = {}) => ({
+export const task = (overrides: Partial<Task> = {}) => ({
   id: "1",
   title: "Write tests",
   description: "cover the auth link",
@@ -38,7 +39,7 @@ export interface GraphqlCall {
   authorization: string | null;
 }
 
-type Resolver = (call: GraphqlCall) => unknown;
+type Resolver = (call: GraphqlCall) => unknown | Promise<unknown>;
 
 // A resolver returns a JSON body, or a Response to control the status.
 export function mockGraphql(resolvers: Record<string, Resolver>) {
@@ -64,7 +65,7 @@ export function mockGraphql(resolvers: Record<string, Resolver>) {
           { status: 500 },
         );
       }
-      const out = resolver(call);
+      const out = await resolver(call);
       return out instanceof Response ? out : HttpResponse.json(out as object);
     }),
   );

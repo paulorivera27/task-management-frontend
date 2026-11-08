@@ -1,6 +1,7 @@
 import TaskForm from "../components/TaskForm";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { invalidateTasks } from "../lib/cache";
 import { CREATE_TASK } from "../graphql/mutations";
 import { useMutation } from "@apollo/client/react";
 import { useMutationFeedback } from "../hooks/useMutationFeedback";
@@ -20,8 +21,9 @@ export default function TaskCreatePage() {
     CreateTaskData,
     CreateTaskVariables
   >(CREATE_TASK, {
-    refetchQueries: ({ data }) =>
-      data?.createTask.errors.length ? [] : ["GetTasks"],
+    update: (cache, { data }) => {
+      if (!data?.createTask.errors.length) invalidateTasks(cache);
+    },
   });
 
   const handleSubmit = async (values: TaskFormValues) => {

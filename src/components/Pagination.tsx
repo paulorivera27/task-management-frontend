@@ -3,6 +3,7 @@ import {
   PaginationContainer,
 } from "./styles/paginationComponent";
 import { Button } from "./styles/shared";
+import { pageWindow } from "../utils/pagination";
 import { useTranslation } from "react-i18next";
 
 export default function Pagination({
@@ -25,14 +26,16 @@ export default function Pagination({
         {t("pagination.previous")}
       </Button>
 
-      {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-        (page) => (
+      {pageWindow(currentPage, totalPages).map((item, index) =>
+        item === "gap" ? (
+          <span key={`gap-${index}`}>…</span>
+        ) : (
           <PaginationButton
-            key={page}
-            $active={page === currentPage}
-            onClick={() => onPageChange(page)}
+            key={item}
+            $active={item === currentPage}
+            onClick={() => onPageChange(item)}
           >
-            {page}
+            {item}
           </PaginationButton>
         ),
       )}

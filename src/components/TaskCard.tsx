@@ -10,6 +10,7 @@ import { ErrorText } from "./styles/taskForm";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@apollo/client/react";
+import { invalidateTasks } from "../lib/cache";
 import { statusTranslationKey } from "../utils/constants";
 import { Button, FlexRowContainer } from "./styles/shared";
 import { DELETE_TASK, UPDATE_TASK } from "../graphql/mutations";
@@ -31,20 +32,19 @@ export default function TaskCard({ task }: TaskItemProps) {
     DeleteTaskData,
     { id: string }
   >(DELETE_TASK, {
-    refetchQueries: ({ data }) =>
-      data?.deleteTask.errors.length ? [] : ["GetTasks"],
     update: (cache, { data }) => {
       if (data?.deleteTask.errors.length) return;
       cache.evict({ id: cache.identify({ __typename: "Task", id: task.id }) });
-      cache.gc();
+      invalidateTasks(cache);
     },
   });
   const [updateTaskStatus, { loading: updating }] = useMutation<
     UpdateTaskData,
     UpdateTaskVariables
   >(UPDATE_TASK, {
-    refetchQueries: ({ data }) =>
-      data?.updateTask.errors.length ? [] : ["GetTasks"],
+    update: (cache, { data }) => {
+      if (!data?.updateTask.errors.length) invalidateTasks(cache);
+    },
   });
 
   const handleStatusChange = (newStatus: TaskStatus) =>
