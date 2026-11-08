@@ -54,3 +54,6 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t task-management-frontend .
+
+      - name: Smoke test Docker image
+        run: scripts/docker-smoke.sh task-management-frontend
