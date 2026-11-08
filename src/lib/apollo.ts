@@ -45,16 +45,31 @@ function parseSession(value: unknown): Session | null {
   return { token: v.token, user: { id: String(id), email } };
 }
 
-async function requestRefresh(): Promise<Session | null> {
-  let res: Response;
+const RETRY_DELAY_MS = 500;
+
+const postRefresh = () =>
+  fetch(`${API_ORIGIN}/auth/refresh`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+// A response lost in transit leaves the browser with the old cookie, which the API still honours for a
+// few seconds: one retry recovers the session instead of signing the user out.
+async function fetchRefresh(): Promise<Response> {
   try {
-    res = await fetch(`${API_ORIGIN}/auth/refresh`, {
-      method: "POST",
-      credentials: "include",
-    });
+    return await postRefresh();
   } catch {
-    throw new RefreshUnavailableError();
+    await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+    try {
+      return await postRefresh();
+    } catch {
+      throw new RefreshUnavailableError();
+    }
   }
+}
+
+async function requestRefresh(): Promise<Session | null> {
+  const res = await fetchRefresh();
 
   // Only a 401 means the refresh token is gone; 429 and 5xx must not log the user out.
   if (res.status === 401) {

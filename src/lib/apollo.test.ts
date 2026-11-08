@@ -75,10 +75,26 @@ describe("refreshSession", () => {
     await expect(refreshSession()).rejects.toBeInstanceOf(RefreshUnavailableError);
   });
 
-  it("rejects when the network is down", async () => {
-    mockRefresh(() => Response.error());
+  it("rejects when the network stays down, after one retry", async () => {
+    const calls = mockRefresh(() => Response.error());
 
     await expect(refreshSession()).rejects.toBeInstanceOf(RefreshUnavailableError);
+    expect(calls).toHaveLength(2);
+  });
+
+  it("recovers when only the first attempt is lost", async () => {
+    let attempt = 0;
+    const calls = mockRefresh(() => (attempt++ === 0 ? Response.error() : sessionBody("recovered")));
+
+    await expect(refreshSession()).resolves.toMatchObject({ token: "recovered" });
+    expect(calls).toHaveLength(2);
+  });
+
+  it("does not retry a definitive answer", async () => {
+    const calls = mockRefresh(() => status(401));
+
+    await expect(refreshSession()).resolves.toBeNull();
+    expect(calls).toHaveLength(1);
   });
 });
 
