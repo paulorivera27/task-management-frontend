@@ -54,3 +54,9 @@ export const ErrorText = styled.p`
   color: #d32f2f;
   font-size: 0.875rem;
 `;
+
+export const HintText = styled.p`
+  margin: 0;
+  color: #555;
+  font-size: 0.813rem;
+`;

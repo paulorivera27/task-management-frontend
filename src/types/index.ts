@@ -57,6 +57,11 @@ export interface User {
   email: string;
 }
 
+export interface Session {
+  token: string;
+  user: User;
+}
+
 export interface AuthPayload {
   token: string | null;
   user: User | null;
@@ -79,6 +84,8 @@ export interface AuthContextType {
   user: User | null;
   loading: boolean;
   isAuthenticated: boolean;
+  sessionExpired: boolean;
+  loggedOut: boolean;
   login: (token: string, user: User) => void;
-  logout: () => Promise<void>;
+  logout: () => Promise<boolean>;
 }

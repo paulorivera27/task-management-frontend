@@ -5,9 +5,14 @@ import {
   ApolloClient,
   InMemoryCache,
 } from "@apollo/client";
+import type { Session } from "../types";
 import { ErrorLink } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
-import { CombinedGraphQLErrors } from "@apollo/client/errors";
+import {
+  isUnauthenticated,
+  SessionExpiredError,
+  RefreshUnavailableError,
+} from "./errors";
 
 const API_BASE = import.meta.env.VITE_API_URL || "/graphql";
 const API_ORIGIN = new URL(API_BASE, window.location.origin).origin;
@@ -22,60 +27,72 @@ export function setAccessToken(token: string | null) {
   accessToken = token;
 }
 
-let refreshPromise: Promise<string | null> | null = null;
+const sessionLostListeners = new Set<() => void>();
 
-export async function refreshAccessToken(): Promise<string | null> {
-  if (refreshPromise) return refreshPromise;
-
-  refreshPromise = fetch(`${API_ORIGIN}/auth/refresh`, {
-    method: "POST",
-    credentials: "include",
-  })
-    .then(async (res) => {
-      if (!res.ok) {
-        setAccessToken(null);
-        return null;
-      }
-      const data = await res.json();
-      setAccessToken(data.token);
-      return data.token as string;
-    })
-    .catch(() => {
-      setAccessToken(null);
-      return null;
-    })
-    .finally(() => {
-      refreshPromise = null;
-    });
-
-  return refreshPromise;
+export function onSessionLost(listener: () => void) {
+  sessionLostListeners.add(listener);
+  return () => {
+    sessionLostListeners.delete(listener);
+  };
 }
 
-export async function refreshSession(): Promise<{
-  token: string;
-  user: { id: string; email: string };
-} | null> {
+// The REST endpoint serializes the numeric database id; GraphQL ids are strings.
+function parseSession(value: unknown): Session | null {
+  const v = value as { token?: unknown; user?: { id?: unknown; email?: unknown } };
+  const { id, email } = v?.user ?? {};
+  if (typeof v?.token !== "string" || typeof email !== "string") return null;
+  if (typeof id !== "string" && typeof id !== "number") return null;
+  return { token: v.token, user: { id: String(id), email } };
+}
+
+async function requestRefresh(): Promise<Session | null> {
+  let res: Response;
   try {
-    const res = await fetch(`${API_ORIGIN}/auth/refresh`, {
+    res = await fetch(`${API_ORIGIN}/auth/refresh`, {
       method: "POST",
       credentials: "include",
     });
-    if (!res.ok) return null;
-    const data = await res.json();
-    setAccessToken(data.token);
-    return data;
   } catch {
+    throw new RefreshUnavailableError();
+  }
+
+  // Only a 401 means the refresh token is gone; 429 and 5xx must not log the user out.
+  if (res.status === 401) {
+    setAccessToken(null);
     return null;
+  }
+  if (!res.ok) throw new RefreshUnavailableError(res.status);
+
+  const session = parseSession(await res.json().catch(() => null));
+  if (!session) throw new RefreshUnavailableError(res.status);
+
+  setAccessToken(session.token);
+  return session;
+}
+
+// Refresh tokens are single-use: concurrent callers must share one request.
+let refreshPromise: Promise<Session | null> | null = null;
+
+export function refreshSession(): Promise<Session | null> {
+  refreshPromise ??= requestRefresh().finally(() => {
+    refreshPromise = null;
+  });
+  return refreshPromise;
+}
+
+export async function logoutFromServer(): Promise<boolean> {
+  try {
+    const res = await fetch(`${API_ORIGIN}/auth/logout`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    return res.ok;
+  } catch {
+    return false;
   }
 }
 
-export async function logoutFromServer(): Promise<void> {
-  await fetch(`${API_ORIGIN}/auth/logout`, {
-    method: "DELETE",
-    credentials: "include",
-  }).catch(() => {});
-}
-
+// Sign-in and sign-up receive the refresh cookie on the /graphql response, so credentials stay on.
 const httpLink = new HttpLink({
   uri: API_BASE,
   credentials: "include",
@@ -92,34 +109,26 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const errorLink = new ErrorLink(({ error, operation, forward }) => {
-  if (CombinedGraphQLErrors.is(error)) {
-    const authError = error.errors.some(
-      (e) => e.message === "Authentication required",
-    );
+  if (!isUnauthenticated(error)) return;
 
-    if (authError) {
-      return new Observable((observer) => {
-        refreshAccessToken()
-          .then((newToken) => {
-            if (!newToken) {
-              observer.error(new Error("Session expired"));
-              return;
-            }
+  return new Observable((observer) => {
+    let retry: { unsubscribe(): void } | undefined;
 
-            const oldHeaders = operation.getContext().headers || {};
-            operation.setContext({
-              headers: {
-                ...oldHeaders,
-                Authorization: `Bearer ${newToken}`,
-              },
-            });
+    refreshSession()
+      .then((session) => {
+        if (!session) {
+          sessionLostListeners.forEach((listener) => listener());
+          observer.error(new SessionExpiredError());
+          return;
+        }
 
-            forward(operation).subscribe(observer);
-          })
-          .catch((err) => observer.error(err));
-      });
-    }
-  }
+        // Re-enters authLink, which reads the refreshed token. Results of the retry bypass this handler.
+        retry = forward(operation).subscribe(observer);
+      })
+      .catch((err) => observer.error(err));
+
+    return () => retry?.unsubscribe();
+  });
 });
 
 const client = new ApolloClient({

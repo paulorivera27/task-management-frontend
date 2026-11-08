@@ -60,6 +60,14 @@
     "has_account": "¿Ya tienes una cuenta?",
     "sign_in_link": "Inicia sesión",
     "sign_up_link": "Regístrate",
-    "generic_error": "Algo salió mal. Por favor, inténtalo de nuevo."
+    "password_hint": "Al menos 8 caracteres."
+  },
+  "errors": {
+    "session_expired": "Tu sesión ha expirado. Inicia sesión de nuevo.",
+    "too_many_requests": "Demasiadas solicitudes. Espera un minuto e inténtalo de nuevo.",
+    "network": "No se puede conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.",
+    "server": "El servidor tuvo un problema. Inténtalo de nuevo más tarde.",
+    "generic": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "logout_failed": "No se pudo cerrar la sesión. Inténtalo de nuevo."
   }
 }

@@ -60,6 +60,14 @@
     "has_account": "Already have an account?",
     "sign_in_link": "Sign in",
     "sign_up_link": "Sign up",
-    "generic_error": "Something went wrong. Please try again."
+    "password_hint": "At least 8 characters."
+  },
+  "errors": {
+    "session_expired": "Your session has expired. Please sign in again.",
+    "too_many_requests": "Too many requests. Please wait a minute and try again.",
+    "network": "Can't reach the server. Check your connection and try again.",
+    "server": "The server had a problem. Please try again later.",
+    "generic": "Something went wrong. Please try again.",
+    "logout_failed": "Couldn't log out. Please try again."
   }
 }
