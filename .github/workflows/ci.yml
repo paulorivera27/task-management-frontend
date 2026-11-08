@@ -1,3 +1,5 @@
+name: CI
+
 on:
   push:
     branches:
@@ -5,9 +7,18 @@ on:
   pull_request:
     branches:
       - master
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Runners are pinned so CI does not change when ubuntu-latest moves.
 jobs:
   lint-and-typecheck:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -15,7 +26,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: "22.x"
+          node-version-file: .nvmrc
           cache: "npm"
 
       - name: Install dependencies
@@ -29,8 +40,11 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -38,7 +52,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
-          node-version: "22.x"
+          node-version-file: .nvmrc
           cache: "npm"
 
       - name: Install dependencies
@@ -47,7 +61,7 @@ jobs:
       - name: Build application
         run: npm run build
   docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
