@@ -10,11 +10,12 @@
   },
   "task_card": {
     "updating_message": "Actualizando...",
-    "mark_action": "Marcar como {{status}}",
     "deleting_message": "Eliminando...",
     "delete_action": "Eliminar",
     "delete_confirmation": "¿Eliminar {{title}}?",
-    "edit_action": "Editar"
+    "edit_action": "Editar",
+    "mark_in_progress": "Marcar como en progreso",
+    "mark_completed": "Marcar como completado"
   },
   "status_filters": {
     "all": "Todos",
@@ -72,9 +73,21 @@
     "network": "No se puede conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.",
     "server": "El servidor tuvo un problema. Inténtalo de nuevo más tarde.",
     "generic": "Algo salió mal. Por favor, inténtalo de nuevo.",
-    "logout_failed": "No se pudo cerrar la sesión. Inténtalo de nuevo."
+    "logout_failed": "No se pudo cerrar la sesión. Inténtalo de nuevo.",
+    "invalid_credentials": "Correo o contraseña no válidos.",
+    "email_taken": "Ese correo ya está registrado.",
+    "email_invalid": "Introduce un correo válido.",
+    "email_blank": "El correo no puede estar vacío.",
+    "password_short": "La contraseña debe tener al menos {{min}} caracteres.",
+    "password_blank": "La contraseña no puede estar vacía.",
+    "title_blank": "El título no puede estar vacío.",
+    "task_not_found": "Esa tarea ya no existe.",
+    "password_long": "La contraseña es demasiado larga."
   },
   "language": {
     "label": "Idioma"
+  },
+  "app": {
+    "title": "Gestor de tareas"
   }
 }

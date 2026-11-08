@@ -66,7 +66,7 @@ describe("TaskCard", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
-    expect(await screen.findByRole("alert")).toHaveTextContent("Task with ID 1 not found.");
+    expect(await screen.findByRole("alert")).toHaveTextContent("That task no longer exists.");
     expect(screen.getByText("Write tests")).toBeInTheDocument();
   });
 

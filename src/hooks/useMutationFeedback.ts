@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { errorMessageKey } from "../lib/errors";
+import { errorMessageKey, translateServerMessage } from "../lib/errors";
 
 interface Payload {
   errors: string[];
@@ -17,7 +17,10 @@ export function useMutationFeedback() {
       try {
         const payload = await action();
         if (payload && !payload.errors.length) return true;
-        setError(payload?.errors.join(", ") || t("errors.generic"));
+        setError(
+          payload?.errors.map((e) => translateServerMessage(e, t)).join(", ") ||
+            t("errors.generic"),
+        );
       } catch (err) {
         setError(t(errorMessageKey(err)));
       }

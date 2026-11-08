@@ -12,7 +12,7 @@ export default function LanguageSwitcher() {
 
   return (
     <LanguageSelect
-      value={i18n.language}
+      value={i18n.resolvedLanguage}
       aria-label={t("language.label")}
       onChange={(e) => i18n.changeLanguage(e.target.value)}
     >

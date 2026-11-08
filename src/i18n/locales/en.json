@@ -10,11 +10,12 @@
   },
   "task_card": {
     "updating_message": "Updating...",
-    "mark_action": "Mark as {{status}}",
     "deleting_message": "Deleting...",
     "delete_action": "Delete",
     "delete_confirmation": "Delete {{title}}?",
-    "edit_action": "Edit"
+    "edit_action": "Edit",
+    "mark_in_progress": "Mark as in progress",
+    "mark_completed": "Mark as completed"
   },
   "status_filters": {
     "all": "All",
@@ -72,9 +73,21 @@
     "network": "Can't reach the server. Check your connection and try again.",
     "server": "The server had a problem. Please try again later.",
     "generic": "Something went wrong. Please try again.",
-    "logout_failed": "Couldn't log out. Please try again."
+    "logout_failed": "Couldn't log out. Please try again.",
+    "invalid_credentials": "Invalid email or password.",
+    "email_taken": "That email address is already registered.",
+    "email_invalid": "Enter a valid email address.",
+    "email_blank": "Email can't be blank.",
+    "password_short": "Password must be at least {{min}} characters.",
+    "password_blank": "Password can't be blank.",
+    "title_blank": "Title can't be blank.",
+    "task_not_found": "That task no longer exists.",
+    "password_long": "Password is too long."
   },
   "language": {
     "label": "Language"
+  },
+  "app": {
+    "title": "Task Manager"
   }
 }

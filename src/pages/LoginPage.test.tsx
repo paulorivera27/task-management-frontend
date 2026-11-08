@@ -1,6 +1,7 @@
 import LoginPage from "./LoginPage";
 import { Route } from "react-router-dom";
 import { describe, expect, it } from "vitest";
+import i18n from "i18next";
 import { renderRoutes } from "../test/render";
 import userEvent from "@testing-library/user-event";
 import { screen, waitFor } from "@testing-library/react";
@@ -111,6 +112,22 @@ describe("LoginPage", () => {
     expect(location()).toBe("/login");
   });
 
+  it("translates the API's credential error into the active language", async () => {
+    await i18n.changeLanguage("ja");
+    mockRefresh(() => status(401));
+    renderRoutes(routes, { route: "/login" });
+    await screen.findByPlaceholderText("メールアドレス");
+    mockGraphql({
+      SignIn: () => authPayload("signIn", { token: null, user: null, errors: ["Invalid email or password."] }),
+    });
+
+    await userEvent.type(screen.getByPlaceholderText("メールアドレス"), "user@example.com");
+    await userEvent.type(screen.getByPlaceholderText("パスワード"), "password123");
+    await userEvent.click(screen.getByRole("button", { name: "ログイン" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("メールアドレスまたはパスワードが正しくありません。");
+  });
+
   it("translates transport failures", async () => {
     await renderSignedOut();
     mockGraphql({ SignIn: () => status(429) });
@@ -141,7 +158,7 @@ describe("LoginPage", () => {
 
     await fillAndSubmit("Sign Up");
 
-    expect(await screen.findByRole("alert")).toHaveTextContent("Email has already been taken");
+    expect(await screen.findByRole("alert")).toHaveTextContent("That email address is already registered.");
     await waitFor(() => expect(location()).toBe("/login"));
   });
 });

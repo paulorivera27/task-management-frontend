@@ -16,7 +16,7 @@ import {
 } from "../components/styles/LoginPage";
 import { useAuth } from "../context/useAuth";
 import { useTranslation } from "react-i18next";
-import { errorMessageKey } from "../lib/errors";
+import { errorMessageKey, translateServerMessage } from "../lib/errors";
 import { useMutation } from "@apollo/client/react";
 import LoadingComponent from "../components/LoadingComponent";
 import { Navigate, useLocation, type Location } from "react-router-dom";
@@ -86,7 +86,9 @@ export default function LoginPage() {
         : (await signIn({ variables: { email, password } })).data?.signIn;
 
       if (payload?.errors?.length) {
-        setFormError(payload.errors.join(", "));
+        setFormError(
+          payload.errors.map((e) => translateServerMessage(e, t)).join(", "),
+        );
         return;
       }
 

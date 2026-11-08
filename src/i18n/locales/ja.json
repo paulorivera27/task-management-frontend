@@ -10,11 +10,12 @@
   },
   "task_card": {
     "updating_message": "更新中...",
-    "mark_action": "{{status}}に変更",
     "deleting_message": "削除中...",
     "delete_action": "削除",
     "delete_confirmation": "「{{title}}」を削除しますか？",
-    "edit_action": "編集"
+    "edit_action": "編集",
+    "mark_in_progress": "進行中に変更",
+    "mark_completed": "完了に変更"
   },
   "status_filters": {
     "all": "すべて",
@@ -72,9 +73,21 @@
     "network": "サーバーに接続できません。接続を確認してもう一度お試しください。",
     "server": "サーバーで問題が発生しました。しばらくしてからもう一度お試しください。",
     "generic": "エラーが発生しました。もう一度お試しください。",
-    "logout_failed": "ログアウトできませんでした。もう一度お試しください。"
+    "logout_failed": "ログアウトできませんでした。もう一度お試しください。",
+    "invalid_credentials": "メールアドレスまたはパスワードが正しくありません。",
+    "email_taken": "このメールアドレスは既に登録されています。",
+    "email_invalid": "有効なメールアドレスを入力してください。",
+    "email_blank": "メールアドレスを入力してください。",
+    "password_short": "パスワードは{{min}}文字以上で入力してください。",
+    "password_blank": "パスワードを入力してください。",
+    "title_blank": "タイトルを入力してください。",
+    "task_not_found": "このタスクは存在しません。",
+    "password_long": "パスワードが長すぎます。"
   },
   "language": {
     "label": "言語"
+  },
+  "app": {
+    "title": "タスク管理"
   }
 }

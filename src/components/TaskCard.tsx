@@ -22,6 +22,11 @@ import type {
   UpdateTaskVariables,
 } from "../types";
 
+const markActionKey = {
+  [TaskStatus.IN_PROGRESS]: "task_card.mark_in_progress",
+  [TaskStatus.COMPLETED]: "task_card.mark_completed",
+} as const;
+
 export default function TaskCard({ task }: TaskItemProps) {
   const { t } = useTranslation();
 
@@ -79,7 +84,7 @@ export default function TaskCard({ task }: TaskItemProps) {
       <FlexRowContainer $justify="space-between">
         <CardTitle>{task.title}</CardTitle>
         <StatusBadge $status={task.status}>
-          {t(statusTranslationKey[task.status]).toLocaleUpperCase()}
+          {t(statusTranslationKey[task.status])}
         </StatusBadge>
       </FlexRowContainer>
 
@@ -96,11 +101,7 @@ export default function TaskCard({ task }: TaskItemProps) {
           >
             {updating
               ? t("task_card.updating_message")
-              : t("task_card.mark_action", {
-                  status: t(
-                    statusTranslationKey[nextStatus],
-                  ).toLocaleLowerCase(),
-                })}
+              : t(markActionKey[nextStatus])}
           </Button>
         )}
         <Button onClick={handleDelete} disabled={deleting}>

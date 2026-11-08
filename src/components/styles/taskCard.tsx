@@ -24,6 +24,7 @@ export const Description = styled.p`
 export const StatusBadge = styled.span<{ $status: TaskStatus }>`
   font-weight: 600;
   padding: 2px 8px;
+  text-transform: uppercase;
   border-radius: 4px;
   font-size: 0.75rem;
   display: inline-block;

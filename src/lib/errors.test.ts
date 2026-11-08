@@ -1,7 +1,9 @@
+import i18n from "i18next";
 import { describe, expect, it } from "vitest";
 import {
   isUnauthenticated,
   errorMessageKey,
+  translateServerMessage,
   SessionExpiredError,
   RefreshUnavailableError,
 } from "./errors";
@@ -59,5 +61,34 @@ describe("errorMessageKey", () => {
   it("falls back to the generic message", () => {
     expect(errorMessageKey(graphqlError("boom"))).toBe("errors.generic");
     expect(errorMessageKey("nope")).toBe("errors.generic");
+  });
+});
+
+describe("translateServerMessage", () => {
+  const t = i18n.t.bind(i18n);
+
+  it.each([
+    ["Invalid email or password.", "Invalid email or password."],
+    ["Email has already been taken", "That email address is already registered."],
+    ["Email is invalid", "Enter a valid email address."],
+    ["Password is too short (minimum is 8 characters)", "Password must be at least 8 characters."],
+    ["Title can't be blank", "Title can't be blank."],
+    ["Task with ID 42 not found.", "That task no longer exists."],
+    ["Not found", "That task no longer exists."],
+    ["Password is too long", "Password is too long."],
+  ])("%s", (message, expected) => {
+    expect(translateServerMessage(message, t)).toBe(expected);
+  });
+
+  it("follows the active language", async () => {
+    await i18n.changeLanguage("es");
+
+    expect(translateServerMessage("Password is too short (minimum is 8 characters)", t)).toBe(
+      "La contraseña debe tener al menos 8 caracteres.",
+    );
+  });
+
+  it("passes unknown messages through untouched", () => {
+    expect(translateServerMessage("Something new", t)).toBe("Something new");
   });
 });
