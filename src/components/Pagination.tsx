@@ -18,7 +18,7 @@ export default function Pagination({
   const { t } = useTranslation();
 
   return (
-    <PaginationContainer>
+    <PaginationContainer aria-label={t("pagination.label")}>
       <Button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage <= 1}
@@ -28,11 +28,14 @@ export default function Pagination({
 
       {pageWindow(currentPage, totalPages).map((item, index) =>
         item === "gap" ? (
-          <span key={`gap-${index}`}>…</span>
+          <span key={`gap-${index}`} aria-hidden="true">
+            …
+          </span>
         ) : (
           <PaginationButton
             key={item}
             $active={item === currentPage}
+            aria-current={item === currentPage ? "page" : undefined}
             onClick={() => onPageChange(item)}
           >
             {item}

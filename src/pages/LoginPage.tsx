@@ -23,7 +23,11 @@ import { Navigate, useLocation, type Location } from "react-router-dom";
 import type { SignInData, SignUpData } from "../types";
 import { SIGN_IN, SIGN_UP } from "../graphql/mutations";
 import LanguageSwitcher from "../components/LanguageSwitcher";
-import { Button, FlexRowContainer } from "../components/styles/shared";
+import {
+  Button,
+  FlexRowContainer,
+  VisuallyHiddenLabel,
+} from "../components/styles/shared";
 
 const MIN_PASSWORD_LENGTH = 8;
 
@@ -110,6 +114,9 @@ export default function LoginPage() {
         )}
         <form onSubmit={handleSubmit}>
           <FlexColumnContainer $align="normal">
+            <VisuallyHiddenLabel htmlFor="email">
+              {t("auth.email_placeholder")}
+            </VisuallyHiddenLabel>
             <Input
               required
               id="email"
@@ -120,6 +127,9 @@ export default function LoginPage() {
               placeholder={t("auth.email_placeholder")}
             />
 
+            <VisuallyHiddenLabel htmlFor="password">
+              {t("auth.password_placeholder")}
+            </VisuallyHiddenLabel>
             <Input
               required
               id="password"
@@ -127,11 +137,14 @@ export default function LoginPage() {
               value={password}
               minLength={isSignUp ? MIN_PASSWORD_LENGTH : undefined}
               autoComplete={isSignUp ? "new-password" : "current-password"}
+              aria-describedby={isSignUp ? "password-hint" : undefined}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={t("auth.password_placeholder")}
             />
 
-            {isSignUp && <HintText>{t("auth.password_hint")}</HintText>}
+            {isSignUp && (
+              <HintText id="password-hint">{t("auth.password_hint")}</HintText>
+            )}
 
             <Button type="submit" disabled={loading}>
               {loading

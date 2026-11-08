@@ -7,7 +7,7 @@ import {
 } from "./styles/taskForm";
 import { useState } from "react";
 import { TaskStatus } from "../types";
-import { Button } from "./styles/shared";
+import { Button, VisuallyHiddenLabel } from "./styles/shared";
 import type { TaskFormProps } from "../types";
 import { taskStatuses, statusTranslationKey } from "../utils/constants";
 import { useTranslation } from "react-i18next";
@@ -40,6 +40,9 @@ export default function TaskForm({
     <SecondaryContainer>
       <form onSubmit={handleSubmit}>
         <FlexColumnContainer $align="normal">
+          <VisuallyHiddenLabel htmlFor="title">
+            {t("task_form.title_placeholder")}
+          </VisuallyHiddenLabel>
           <Input
             required
             id="title"
@@ -49,6 +52,9 @@ export default function TaskForm({
             placeholder={t("task_form.title_placeholder")}
           />
 
+          <VisuallyHiddenLabel htmlFor="description">
+            {t("task_form.description_placeholder")}
+          </VisuallyHiddenLabel>
           <TextArea
             rows={3}
             id="description"
@@ -57,6 +63,9 @@ export default function TaskForm({
             placeholder={t("task_form.description_placeholder")}
           />
 
+          <VisuallyHiddenLabel htmlFor="status">
+            {t("task_form.status_label")}
+          </VisuallyHiddenLabel>
           <Select
             id="status"
             value={status}

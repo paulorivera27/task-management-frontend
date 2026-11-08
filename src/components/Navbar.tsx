@@ -15,7 +15,7 @@ export default function Navbar() {
   };
 
   return (
-    <Nav>
+    <Nav aria-label={t("nav.label")}>
       <UserEmail>{user?.email}</UserEmail>
       <LanguageSwitcher />
       <LogoutButton onClick={handleLogout}>{t("nav.logout")}</LogoutButton>

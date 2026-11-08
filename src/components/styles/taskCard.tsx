@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import type { TaskStatus } from "../../types";
 
-export const CardTitle = styled.h3`
+export const CardTitle = styled.h2`
   margin: 0 0 8px;
+  font-size: 1.17rem;
   background: #fff;
 `;
 
-export const Card = styled.div`
+export const Card = styled.article`
   padding: 16px;
   background: #fff;
   border-radius: 8px;

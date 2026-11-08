@@ -7,7 +7,7 @@ import {
 } from "./styles/taskCard";
 import { TaskStatus } from "../types";
 import { ErrorText } from "./styles/taskForm";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@apollo/client/react";
 import { invalidateTasks } from "../lib/cache";
@@ -24,7 +24,6 @@ import type {
 
 export default function TaskCard({ task }: TaskItemProps) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   const { error, run } = useMutationFeedback();
 
@@ -86,7 +85,7 @@ export default function TaskCard({ task }: TaskItemProps) {
 
       <Description>{task.description}</Description>
       <Actions>
-        <Button onClick={() => navigate(`/tasks/${task.id}/edit`)}>
+        <Button as={Link} to={`/tasks/${task.id}/edit`}>
           {t("task_card.edit_action")}
         </Button>
 

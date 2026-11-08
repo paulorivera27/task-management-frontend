@@ -20,7 +20,8 @@
     "all": "すべて",
     "pending": "未着手",
     "completed": "完了",
-    "in_progress": "進行中"
+    "in_progress": "進行中",
+    "label": "ステータスで絞り込み"
   },
   "tasks_create": {
     "title": "新しいタスクを作成"
@@ -34,11 +35,13 @@
     "description_placeholder": "タスクの説明",
     "saving": "保存中...",
     "update_button": "タスクを更新",
-    "create_button": "タスクを作成"
+    "create_button": "タスクを作成",
+    "status_label": "ステータス"
   },
   "pagination": {
     "previous": "前へ",
-    "next": "次へ"
+    "next": "次へ",
+    "label": "ページ送り"
   },
   "not_found": {
     "title": "ページが見つかりません",
@@ -46,7 +49,8 @@
     "go_home": "ホームに戻る"
   },
   "nav": {
-    "logout": "ログアウト"
+    "logout": "ログアウト",
+    "label": "メインナビゲーション"
   },
   "auth": {
     "sign_in_title": "ログイン",
@@ -69,5 +73,8 @@
     "server": "サーバーで問題が発生しました。しばらくしてからもう一度お試しください。",
     "generic": "エラーが発生しました。もう一度お試しください。",
     "logout_failed": "ログアウトできませんでした。もう一度お試しください。"
+  },
+  "language": {
+    "label": "言語"
   }
 }

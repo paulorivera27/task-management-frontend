@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { penCursor } from "../../assets";
 
-export const PaginationContainer = styled.div`
+export const PaginationContainer = styled.nav`
   gap: 8px;
   margin: 8px;
   display: flex;

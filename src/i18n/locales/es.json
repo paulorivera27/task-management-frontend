@@ -20,7 +20,8 @@
     "all": "Todos",
     "pending": "Pendiente",
     "completed": "Completado",
-    "in_progress": "En Progreso"
+    "in_progress": "En Progreso",
+    "label": "Filtrar por estado"
   },
   "tasks_create": {
     "title": "Crear Nueva Tarea"
@@ -34,11 +35,13 @@
     "description_placeholder": "Descripción de la Tarea",
     "saving": "Guardando...",
     "update_button": "Actualizar Tarea",
-    "create_button": "Crear Tarea"
+    "create_button": "Crear Tarea",
+    "status_label": "Estado"
   },
   "pagination": {
     "previous": "Anterior",
-    "next": "Siguiente"
+    "next": "Siguiente",
+    "label": "Paginación"
   },
   "not_found": {
     "title": "Página no encontrada",
@@ -46,7 +49,8 @@
     "go_home": "Ir al inicio"
   },
   "nav": {
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "label": "Navegación principal"
   },
   "auth": {
     "sign_in_title": "Iniciar Sesión",
@@ -69,5 +73,8 @@
     "server": "El servidor tuvo un problema. Inténtalo de nuevo más tarde.",
     "generic": "Algo salió mal. Por favor, inténtalo de nuevo.",
     "logout_failed": "No se pudo cerrar la sesión. Inténtalo de nuevo."
+  },
+  "language": {
+    "label": "Idioma"
   }
 }

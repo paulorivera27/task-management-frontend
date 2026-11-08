@@ -8,14 +8,7 @@ export default function EmptyState({ isTaskList }: EmptyStateProps) {
 
   return (
     <NoTasksContainer>
-      <img
-        src={sleepyTaskImage}
-        alt={
-          isTaskList
-            ? t("tasks_list.no_tasks_message")
-            : t("tasks_edit.task_not_found")
-        }
-      />
+      <img src={sleepyTaskImage} alt="" />
       {isTaskList ? (
         <p>{t("tasks_list.no_tasks_message")}</p>
       ) : (

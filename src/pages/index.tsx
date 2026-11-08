@@ -6,14 +6,13 @@ import TaskFilter from "../components/TaskFilter";
 import Pagination from "../components/Pagination";
 import { useCallback, useEffect } from "react";
 import type { GetTasksData, TaskStatus } from "../types";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Button, FlexRowContainer } from "../components/styles/shared";
 import { MainContainer, PageTitle } from "../components/styles/taskList";
 import { PER_PAGE, parsePage, parseStatus } from "../utils/pagination";
 
 export default function IndexPage() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
   const page = parsePage(params.get("page"));
   const filter = parseStatus(params.get("status"));
@@ -74,7 +73,7 @@ export default function IndexPage() {
         $background="transparent"
       >
         <TaskFilter current={filter} onChange={handleFilterChange} />
-        <Button onClick={() => navigate("/tasks/new")}>
+        <Button as={Link} to="/tasks/new">
           {t("home_page.create_button")}
         </Button>
       </FlexRowContainer>
