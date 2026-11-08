@@ -26,6 +26,9 @@ jobs:
 
       - name: Run TypeScript type checking
         run: npm run typecheck
+
+      - name: Run tests
+        run: npm test
   build:
     runs-on: ubuntu-latest
     steps:
