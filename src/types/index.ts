@@ -29,7 +29,7 @@ export interface GetTaskData {
 }
 
 export interface EmptyStateProps {
-  isTaskList?: boolean;
+  message: string;
 }
 
 export interface TaskItemProps {
@@ -37,24 +37,51 @@ export interface TaskItemProps {
 }
 
 export interface TaskFilterProps {
-  current: string | null;
-  onChange: (status: string | null) => void;
+  current: TaskStatus | null;
+  onChange: (status: TaskStatus | null) => void;
+}
+
+export interface TaskFormValues {
+  title: string;
+  description: string;
+  status: TaskStatus;
 }
 
 export interface TaskFormProps {
   initialValues?: Pick<Task, "title" | "description" | "status">;
-  onSubmit: (values: {
-    title: string;
-    description: string;
-    status: string;
-  }) => void;
+  onSubmit: (values: TaskFormValues) => void;
   loading: boolean;
-  error?: string;
+  error?: string | null;
 }
+
+export interface MutationPayload {
+  errors: string[];
+}
+
+export interface CreateTaskData {
+  createTask: MutationPayload & { task: Task | null };
+}
+
+export interface UpdateTaskData {
+  updateTask: MutationPayload & { task: Task | null };
+}
+
+export interface DeleteTaskData {
+  deleteTask: MutationPayload & { id: string | null };
+}
+
+export type CreateTaskVariables = TaskFormValues;
+
+export type UpdateTaskVariables = { id: string } & Partial<TaskFormValues>;
 
 export interface User {
   id: string;
   email: string;
+}
+
+export interface Session {
+  token: string;
+  user: User;
 }
 
 export interface AuthPayload {
@@ -71,14 +98,12 @@ export interface SignUpData {
   signUp: AuthPayload;
 }
 
-export interface CurrentUserData {
-  currentUser: User;
-}
-
 export interface AuthContextType {
   user: User | null;
   loading: boolean;
   isAuthenticated: boolean;
+  sessionExpired: boolean;
+  loggedOut: boolean;
   login: (token: string, user: User) => void;
-  logout: () => Promise<void>;
+  logout: () => Promise<boolean>;
 }

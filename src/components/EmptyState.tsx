@@ -1,26 +1,12 @@
 import { sleepyTaskImage } from "../assets";
-import { useTranslation } from "react-i18next";
 import type { EmptyStateProps } from "../types";
 import { NoTasksContainer } from "./styles/taskList";
 
-export default function EmptyState({ isTaskList }: EmptyStateProps) {
-  const { t } = useTranslation();
-
+export default function EmptyState({ message }: EmptyStateProps) {
   return (
     <NoTasksContainer>
-      <img
-        src={sleepyTaskImage}
-        alt={
-          isTaskList
-            ? t("tasks_list.no_tasks_message")
-            : t("tasks_edit.task_not_found")
-        }
-      />
-      {isTaskList ? (
-        <p>{t("tasks_list.no_tasks_message")}</p>
-      ) : (
-        <p>{t("tasks_edit.task_not_found")}</p>
-      )}
+      <img src={sleepyTaskImage} alt="" width={200} height={200} />
+      <p>{message}</p>
     </NoTasksContainer>
   );
 }

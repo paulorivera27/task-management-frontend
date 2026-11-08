@@ -8,15 +8,16 @@ const LANGUAGES = [
 ];
 
 export default function LanguageSwitcher() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <LanguageSelect
-      value={i18n.language}
+      value={i18n.resolvedLanguage}
+      aria-label={t("language.label")}
       onChange={(e) => i18n.changeLanguage(e.target.value)}
     >
       {LANGUAGES.map(({ code, label }) => (
-        <option key={code} value={code}>
+        <option key={code} value={code} lang={code}>
           {label}
         </option>
       ))}

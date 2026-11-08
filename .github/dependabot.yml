@@ -1,0 +1,28 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 5
+  groups:
+    react:
+      patterns: [ "react", "react-dom", "react-router*", "@types/react*" ]
+    graphql:
+      patterns: [ "@apollo/client", "graphql" ]
+    test-tools:
+      patterns: [ "vitest", "jsdom", "msw", "@testing-library/*" ]
+    lint-tools:
+      patterns: [ "eslint*", "@eslint/*", "typescript-eslint", "globals" ]
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: weekly
+- package-ecosystem: docker
+  directory: "/"
+  schedule:
+    interval: weekly
+  ignore:
+  # Node is pinned to the 22 LTS line declared in .nvmrc and package.json engines.
+  - dependency-name: node
+    update-types: [ "version-update:semver-major" ]

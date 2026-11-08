@@ -7,37 +7,73 @@ import {
 import {
   Input,
   ErrorText,
+  HintText,
   FlexColumnContainer,
 } from "../components/styles/taskForm";
 import {
   SignUpSignInBtn,
   SignUpSignInContainer,
 } from "../components/styles/LoginPage";
-import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 import { useTranslation } from "react-i18next";
+import { errorMessageKey, translateServerMessage } from "../lib/errors";
 import { useMutation } from "@apollo/client/react";
+import LoadingComponent from "../components/LoadingComponent";
+import { Navigate, useLocation, type Location } from "react-router-dom";
 import type { SignInData, SignUpData } from "../types";
 import { SIGN_IN, SIGN_UP } from "../graphql/mutations";
 import LanguageSwitcher from "../components/LanguageSwitcher";
-import { Button, FlexRowContainer } from "../components/styles/shared";
+import {
+  Button,
+  FlexRowContainer,
+  VisuallyHiddenLabel,
+} from "../components/styles/shared";
+
+const MIN_PASSWORD_LENGTH = 8;
+
+interface Credentials {
+  email: string;
+  password: string;
+}
+
+function redirectTarget(state: unknown): string {
+  const from = (state as { from?: Location } | null)?.from;
+  if (!from?.pathname.startsWith("/") || from.pathname.startsWith("//")) {
+    return "/";
+  }
+  return `${from.pathname}${from.search}${from.hash}`;
+}
 
 export default function LoginPage() {
   const { t } = useTranslation();
-  const { login, isAuthenticated } = useAuth();
+  const location = useLocation();
+  const {
+    login,
+    sessionExpired,
+    isAuthenticated,
+    loading: bootstrapping,
+  } = useAuth();
 
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [formError, setFormError] = useState<string | null>(null);
 
-  const [signIn, { loading: signingIn }] = useMutation<SignInData>(SIGN_IN);
-  const [signUp, { loading: signingUp }] = useMutation<SignUpData>(SIGN_UP);
+  const [signIn, { loading: signingIn }] = useMutation<
+    SignInData,
+    Credentials
+  >(SIGN_IN);
+  const [signUp, { loading: signingUp }] = useMutation<
+    SignUpData,
+    Credentials
+  >(SIGN_UP);
 
   const loading = signingIn || signingUp;
 
+  if (bootstrapping) return <LoadingComponent />;
+
   if (isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={redirectTarget(location.state)} replace />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,39 +81,28 @@ export default function LoginPage() {
     setFormError(null);
 
     try {
-      if (isSignUp) {
-        const { data } = await signUp({ variables: { email, password } });
-        const payload = data?.signUp;
+      const payload = isSignUp
+        ? (await signUp({ variables: { email, password } })).data?.signUp
+        : (await signIn({ variables: { email, password } })).data?.signIn;
 
-        if (payload?.errors?.length) {
-          setFormError(payload.errors.join(", "));
-          return;
-        }
-
-        if (payload?.token && payload?.user) {
-          login(payload.token, payload.user);
-        }
-      } else {
-        const { data } = await signIn({ variables: { email, password } });
-        const payload = data?.signIn;
-
-        if (payload?.errors?.length) {
-          setFormError(payload.errors.join(", "));
-          return;
-        }
-
-        if (payload?.token && payload?.user) {
-          login(payload.token, payload.user);
-        }
+      if (payload?.errors?.length) {
+        setFormError(
+          payload.errors.map((e) => translateServerMessage(e, t)).join(", "),
+        );
+        return;
       }
-    } catch {
-      setFormError(t("auth.generic_error"));
+
+      if (payload?.token && payload.user) {
+        login(payload.token, payload.user);
+      }
+    } catch (err) {
+      setFormError(t(errorMessageKey(err)));
     }
   };
 
   return (
     <MainContainer>
-      <FlexRowContainer $justify="flex-end" $background="transparent">
+      <FlexRowContainer $justify="flex-end">
         <LanguageSwitcher />
       </FlexRowContainer>
 
@@ -86,25 +111,42 @@ export default function LoginPage() {
       </PageTitle>
 
       <SecondaryContainer>
+        {sessionExpired && (
+          <ErrorText role="status">{t("errors.session_expired")}</ErrorText>
+        )}
         <form onSubmit={handleSubmit}>
           <FlexColumnContainer $align="normal">
+            <VisuallyHiddenLabel htmlFor="email">
+              {t("auth.email_placeholder")}
+            </VisuallyHiddenLabel>
             <Input
               required
               id="email"
               type="email"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t("auth.email_placeholder")}
             />
 
+            <VisuallyHiddenLabel htmlFor="password">
+              {t("auth.password_placeholder")}
+            </VisuallyHiddenLabel>
             <Input
               required
               id="password"
               type="password"
               value={password}
+              minLength={isSignUp ? MIN_PASSWORD_LENGTH : undefined}
+              autoComplete={isSignUp ? "new-password" : "current-password"}
+              aria-describedby={isSignUp ? "password-hint" : undefined}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={t("auth.password_placeholder")}
             />
+
+            {isSignUp && (
+              <HintText id="password-hint">{t("auth.password_hint")}</HintText>
+            )}
 
             <Button type="submit" disabled={loading}>
               {loading
@@ -114,7 +156,7 @@ export default function LoginPage() {
                   : t("auth.sign_in_button")}
             </Button>
 
-            {formError && <ErrorText>{formError}</ErrorText>}
+            {formError && <ErrorText role="alert">{formError}</ErrorText>}
           </FlexColumnContainer>
         </form>
       </SecondaryContainer>

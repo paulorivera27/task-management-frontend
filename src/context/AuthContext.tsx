@@ -1,27 +1,36 @@
 import {
   setAccessToken,
+  onSessionLost,
   refreshSession,
   logoutFromServer,
 } from "../lib/apollo";
 import type { User } from "../types";
 import { AuthContext } from "./useAuth";
 import { useApolloClient } from "@apollo/client/react";
-import { useState, useEffect, useCallback, type ReactNode } from "react";
+import {
+  useMemo,
+  useState,
+  useEffect,
+  useCallback,
+  type ReactNode,
+} from "react";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const client = useApolloClient();
   const [user, setUser] = useState<User | null>(null);
   const [ready, setReady] = useState(false);
+  const [sessionExpired, setSessionExpired] = useState(false);
+  const [loggedOut, setLoggedOut] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
 
+    // A transient failure leaves the user signed out rather than blocking the app.
     refreshSession()
       .then((session) => {
-        if (!cancelled && session) {
-          setUser(session.user);
-        }
+        if (!cancelled && session) setUser(session.user);
       })
+      .catch(() => {})
       .finally(() => {
         if (!cancelled) setReady(true);
       });
@@ -31,23 +40,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  useEffect(
+    () =>
+      onSessionLost(() => {
+        setUser(null);
+        setSessionExpired(true);
+        void client.clearStore();
+      }),
+    [client],
+  );
+
   const login = useCallback((token: string, newUser: User) => {
     setAccessToken(token);
+    setSessionExpired(false);
+    setLoggedOut(false);
     setUser(newUser);
   }, []);
 
+  // Local state is kept when the server could not revoke the session: the cookie would restore it on reload.
   const logout = useCallback(async () => {
-    await logoutFromServer();
+    const revoked = await logoutFromServer();
+    if (!revoked) return false;
+
     setAccessToken(null);
+    setLoggedOut(true);
     setUser(null);
-    client.resetStore();
+    await client.clearStore();
+    return true;
   }, [client]);
 
-  return (
-    <AuthContext.Provider
-      value={{ user, loading: !ready, isAuthenticated: !!user, login, logout }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      login,
+      logout,
+      loggedOut,
+      sessionExpired,
+      loading: !ready,
+      isAuthenticated: !!user,
+    }),
+    [user, ready, login, logout, loggedOut, sessionExpired],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

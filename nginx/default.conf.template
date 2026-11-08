@@ -1,0 +1,55 @@
+# Trusts X-Forwarded-Proto from the client: only safe behind a proxy that overwrites it, otherwise a client
+# can make the API mark its own cookie Secure over plain HTTP (it only affects that client).
+map $http_x_forwarded_proto $forwarded_proto {
+  default $http_x_forwarded_proto;
+  ""      $scheme;
+}
+
+server {
+  listen 3000;
+  server_tokens off;
+  client_max_body_size 256k;
+
+  root /usr/share/nginx/html;
+  index index.html;
+
+  # Resolved per request, so the container starts before the API is reachable.
+  resolver ${NGINX_LOCAL_RESOLVERS} valid=10s ipv6=off;
+  set $backend "${BACKEND_URL}";
+
+  gzip on;
+  gzip_vary on;
+  gzip_min_length 1024;
+  gzip_types text/css text/plain application/javascript application/json image/svg+xml;
+
+  include /etc/nginx/snippets/security-headers.conf;
+
+  location = /healthz {
+    access_log off;
+    default_type text/plain;
+    return 200 "ok\n";
+  }
+
+  location /graphql {
+    include /etc/nginx/snippets/proxy.conf;
+    proxy_pass $backend$request_uri;
+  }
+
+  location /auth/ {
+    include /etc/nginx/snippets/proxy.conf;
+    proxy_pass $backend$request_uri;
+  }
+
+  # Hashed filenames: cache for a year, and never answer a missing chunk with index.html.
+  location /assets/ {
+    try_files $uri =404;
+    add_header Cache-Control "public, max-age=31536000, immutable";
+    include /etc/nginx/snippets/security-headers.conf;
+  }
+
+  location / {
+    try_files $uri $uri/ /index.html;
+    add_header Cache-Control "no-cache";
+    include /etc/nginx/snippets/security-headers.conf;
+  }
+}

@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const SignUpSignInBtn = styled.button`
   padding: 0;
   border: none;
-  color: #6200ee;
+  color: var(--color-primary);
   cursor: pointer;
   background: none;
   font-size: inherit;

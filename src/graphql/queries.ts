@@ -28,12 +28,3 @@ export const GET_TASK = gql`
     }
   }
 `;
-
-export const CURRENT_USER = gql`
-  query CurrentUser {
-    currentUser {
-      id
-      email
-    }
-  }
-`;

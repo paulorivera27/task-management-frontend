@@ -4,23 +4,24 @@
     "create_button": "Create Task"
   },
   "tasks_list": {
-    "loading_message": "Loading tasks...",
     "error_loading_tasks": "Error loading tasks. Please try again later.",
     "no_tasks_message": "No tasks found."
   },
   "task_card": {
     "updating_message": "Updating...",
-    "mark_action": "Mark as {{status}}",
     "deleting_message": "Deleting...",
     "delete_action": "Delete",
     "delete_confirmation": "Delete {{title}}?",
-    "edit_action": "Edit"
+    "edit_action": "Edit",
+    "mark_in_progress": "Mark as in progress",
+    "mark_completed": "Mark as completed"
   },
   "status_filters": {
     "all": "All",
     "pending": "Pending",
     "completed": "Completed",
-    "in_progress": "In Progress"
+    "in_progress": "In Progress",
+    "label": "Filter by status"
   },
   "tasks_create": {
     "title": "Create New Task"
@@ -34,11 +35,13 @@
     "description_placeholder": "Task Description",
     "saving": "Saving...",
     "update_button": "Update Task",
-    "create_button": "Create Task"
+    "create_button": "Create Task",
+    "status_label": "Status"
   },
   "pagination": {
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "label": "Pagination"
   },
   "not_found": {
     "title": "Page Not Found",
@@ -46,7 +49,8 @@
     "go_home": "Go Home"
   },
   "nav": {
-    "logout": "Log out"
+    "logout": "Log out",
+    "label": "Main navigation"
   },
   "auth": {
     "sign_in_title": "Sign In",
@@ -60,6 +64,32 @@
     "has_account": "Already have an account?",
     "sign_in_link": "Sign in",
     "sign_up_link": "Sign up",
-    "generic_error": "Something went wrong. Please try again."
+    "password_hint": "At least 8 characters."
+  },
+  "errors": {
+    "session_expired": "Your session has expired. Please sign in again.",
+    "too_many_requests": "Too many requests. Please wait a minute and try again.",
+    "network": "Can't reach the server. Check your connection and try again.",
+    "server": "The server had a problem. Please try again later.",
+    "generic": "Something went wrong. Please try again.",
+    "logout_failed": "Couldn't log out. Please try again.",
+    "invalid_credentials": "Invalid email or password.",
+    "email_taken": "That email address is already registered.",
+    "email_invalid": "Enter a valid email address.",
+    "email_blank": "Email can't be blank.",
+    "password_short": "Password must be at least {{min}} characters.",
+    "password_blank": "Password can't be blank.",
+    "title_blank": "Title can't be blank.",
+    "task_not_found": "That task no longer exists.",
+    "password_long": "Password is too long."
+  },
+  "language": {
+    "label": "Language"
+  },
+  "app": {
+    "title": "Task Manager"
+  },
+  "common": {
+    "loading": "Loading..."
   }
 }

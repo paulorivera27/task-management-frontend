@@ -1,8 +1,6 @@
-import {
-  PaginationButton,
-  PaginationContainer,
-} from "./styles/paginationComponent";
-import { Button } from "./styles/shared";
+import { PaginationContainer } from "./styles/paginationComponent";
+import { Button, ToggleButton } from "./styles/shared";
+import { pageWindow } from "../utils/pagination";
 import { useTranslation } from "react-i18next";
 
 export default function Pagination({
@@ -17,7 +15,7 @@ export default function Pagination({
   const { t } = useTranslation();
 
   return (
-    <PaginationContainer>
+    <PaginationContainer aria-label={t("pagination.label")}>
       <Button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage <= 1}
@@ -25,15 +23,20 @@ export default function Pagination({
         {t("pagination.previous")}
       </Button>
 
-      {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-        (page) => (
-          <PaginationButton
-            key={page}
-            $active={page === currentPage}
-            onClick={() => onPageChange(page)}
+      {pageWindow(currentPage, totalPages).map((item, index) =>
+        item === "gap" ? (
+          <span key={`gap-${index}`} aria-hidden="true">
+            …
+          </span>
+        ) : (
+          <ToggleButton
+            key={item}
+            $active={item === currentPage}
+            aria-current={item === currentPage ? "page" : undefined}
+            onClick={() => onPageChange(item)}
           >
-            {page}
-          </PaginationButton>
+            {item}
+          </ToggleButton>
         ),
       )}
 

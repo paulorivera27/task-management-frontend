@@ -1,20 +1,21 @@
+import { Link } from "react-router-dom";
 import { notFoundImage } from "../assets";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { Button } from "../components/styles/shared";
 import { MainContainer, NoTasksContainer } from "../components/styles/taskList";
 
 export default function NotFoundPage() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   return (
     <MainContainer>
       <NoTasksContainer>
-        <img src={notFoundImage} alt={t("not_found.title")} />
-        <h2>{t("not_found.title")}</h2>
+        <img src={notFoundImage} alt="" width={200} height={200} />
+        <h1>{t("not_found.title")}</h1>
         <p>{t("not_found.message")}</p>
-        <Button onClick={() => navigate("/")}>{t("not_found.go_home")}</Button>
+        <Button as={Link} to="/">
+          {t("not_found.go_home")}
+        </Button>
       </NoTasksContainer>
     </MainContainer>
   );

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const MainContainer = styled.div`
+export const MainContainer = styled.main`
   padding: 20px;
   margin: 0 auto;
   max-width: 680px;
@@ -13,7 +13,7 @@ export const PageTitle = styled.h1`
 export const SecondaryContainer = styled.div`
   padding: 16px;
   border-radius: 8px;
-  border: solid 1px #6200ee;
+  border: solid 1px var(--color-primary);
 `;
 
 export const NoTasksContainer = styled.div`

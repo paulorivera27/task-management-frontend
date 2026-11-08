@@ -1,10 +1,19 @@
+:root {
+  --color-primary: #6200ee;
+  --color-danger: #d32f2f;
+  --color-text-muted: #555;
+  --color-surface: #fff;
+  --color-background: #fafafa;
+  --color-border: #e0e0e0;
+  --color-disabled: #6c757d;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background: #fafafa;
 }
 
 html {
@@ -20,8 +29,14 @@ html {
 
 body {
   min-height: 100vh;
+  background: var(--color-background);
 }
 
 #root {
   min-height: 100vh;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }

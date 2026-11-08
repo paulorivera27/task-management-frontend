@@ -6,41 +6,36 @@ export const Nav = styled.nav`
   padding: 12px 20px;
   align-items: center;
   justify-content: flex-end;
-  border-bottom: solid 1px #e0e0e0;
+  border-bottom: solid 1px var(--color-border);
 `;
 
 export const UserEmail = styled.span`
-  color: #555;
+  color: var(--color-text-muted);
   margin-right: auto;
   font-size: 0.875rem;
 `;
 
 export const LanguageSelect = styled.select`
-  outline: none;
   cursor: pointer;
-  color: #6200ee;
+  color: var(--color-primary);
   padding: 4px 8px;
   border-radius: 4px;
-  background: #fff;
+  background: var(--color-surface);
   font-size: 0.813rem;
-  border: solid 1px #6200ee;
-
-  &:focus {
-    box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.15);
-  }
+  border: solid 1px var(--color-primary);
 `;
 
 export const LogoutButton = styled.button`
   cursor: pointer;
-  color: #d32f2f;
+  color: var(--color-danger);
   background: none;
   padding: 4px 12px;
   border-radius: 4px;
   font-size: 0.813rem;
-  border: solid 1px #d32f2f;
+  border: solid 1px var(--color-danger);
 
   &:hover {
-    background: #d32f2f;
-    color: #fff;
+    background: var(--color-danger);
+    color: var(--color-surface);
   }
 `;
