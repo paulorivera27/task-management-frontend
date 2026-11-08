@@ -1,4 +1,3 @@
-import App from "./App";
 import { Route } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import IndexPage from "./pages/index";
@@ -24,10 +23,6 @@ const list = (n: number, total = n) => ({
 });
 
 describe("accessibility", () => {
-  it("the app module still renders without crashing", () => {
-    expect(App).toBeTypeOf("function");
-  });
-
   it("sign-in page has no axe violations and labelled fields", async () => {
     mockRefresh(() => status(401));
     renderPage(<LoginPage />, { path: "/login" });

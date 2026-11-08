@@ -70,7 +70,6 @@ export default function IndexPage() {
       <FlexRowContainer
         $alignItems="baseline"
         $justify="space-between"
-        $background="transparent"
       >
         <TaskFilter current={filter} onChange={handleFilterChange} />
         <Button as={Link} to="/tasks/new">

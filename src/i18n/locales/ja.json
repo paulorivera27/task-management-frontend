@@ -4,7 +4,6 @@
     "create_button": "タスクを作成"
   },
   "tasks_list": {
-    "loading_message": "タスクを読み込み中...",
     "error_loading_tasks": "タスクの読み込みに失敗しました。後でもう一度お試しください。",
     "no_tasks_message": "タスクが見つかりません。"
   },
@@ -89,5 +88,8 @@
   },
   "app": {
     "title": "タスク管理"
+  },
+  "common": {
+    "loading": "読み込み中..."
   }
 }

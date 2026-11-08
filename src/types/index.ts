@@ -29,7 +29,7 @@ export interface GetTaskData {
 }
 
 export interface EmptyStateProps {
-  isTaskList?: boolean;
+  message: string;
 }
 
 export interface TaskItemProps {

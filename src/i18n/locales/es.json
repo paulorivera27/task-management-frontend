@@ -4,7 +4,6 @@
     "create_button": "Crear Tarea"
   },
   "tasks_list": {
-    "loading_message": "Cargando tareas...",
     "error_loading_tasks": "Error al cargar las tareas. Inténtalo de nuevo más tarde.",
     "no_tasks_message": "No se encontraron tareas."
   },
@@ -89,5 +88,8 @@
   },
   "app": {
     "title": "Gestor de tareas"
+  },
+  "common": {
+    "loading": "Cargando..."
   }
 }

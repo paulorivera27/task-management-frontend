@@ -102,7 +102,7 @@ export default function LoginPage() {
 
   return (
     <MainContainer>
-      <FlexRowContainer $justify="flex-end" $background="transparent">
+      <FlexRowContainer $justify="flex-end">
         <LanguageSwitcher />
       </FlexRowContainer>
 

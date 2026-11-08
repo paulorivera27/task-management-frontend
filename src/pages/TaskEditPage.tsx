@@ -61,7 +61,7 @@ export default function TaskEditPage() {
       ) : fetchError && !notFound ? (
         <ErrorText role="alert">{t(errorMessageKey(fetchError))}</ErrorText>
       ) : !data?.task ? (
-        <EmptyState />
+        <EmptyState message={t("tasks_edit.task_not_found")} />
       ) : (
         <TaskForm
           error={error}

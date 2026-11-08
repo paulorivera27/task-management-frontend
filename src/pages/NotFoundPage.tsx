@@ -10,7 +10,7 @@ export default function NotFoundPage() {
   return (
     <MainContainer>
       <NoTasksContainer>
-        <img src={notFoundImage} alt="" />
+        <img src={notFoundImage} alt="" width={200} height={200} />
         <h1>{t("not_found.title")}</h1>
         <p>{t("not_found.message")}</p>
         <Button as={Link} to="/">

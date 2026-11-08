@@ -4,7 +4,6 @@
     "create_button": "Create Task"
   },
   "tasks_list": {
-    "loading_message": "Loading tasks...",
     "error_loading_tasks": "Error loading tasks. Please try again later.",
     "no_tasks_message": "No tasks found."
   },
@@ -89,5 +88,8 @@
   },
   "app": {
     "title": "Task Manager"
+  },
+  "common": {
+    "loading": "Loading..."
   }
 }

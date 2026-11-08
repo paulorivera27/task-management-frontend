@@ -51,7 +51,7 @@ describe("LoginPage", () => {
     renderRoutes(routes, { route: "/login" });
 
     expect(screen.queryByPlaceholderText("Email")).not.toBeInTheDocument();
-    expect(screen.getByText("Loading tasks...")).toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("sends an already signed-in user to the home page", async () => {

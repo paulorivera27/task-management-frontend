@@ -11,6 +11,19 @@ export default defineConfig({
     port: 3000,
     proxy: { '/graphql': api, '/auth': api },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // Long-lived vendor chunks that stay cached across app releases.
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-dom/client', 'react-router-dom'],
+          apollo: ['@apollo/client', 'graphql'],
+          i18n: ['i18next', 'react-i18next', 'i18next-browser-languagedetector'],
+          styled: ['styled-components'],
+        },
+      },
+    },
+  },
   test: {
     css: false,
     environment: 'jsdom',

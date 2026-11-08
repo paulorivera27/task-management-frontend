@@ -96,7 +96,7 @@ describe("IndexPage", () => {
     await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
     expect(screen.getByText("Task 1")).toBeInTheDocument();
-    expect(screen.queryByText("Loading tasks...")).not.toBeInTheDocument();
+    expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
     release(ok([titled(11)], 20));
     expect(await screen.findByText("Task 11")).toBeInTheDocument();
   });

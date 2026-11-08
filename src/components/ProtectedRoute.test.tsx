@@ -21,7 +21,7 @@ describe("ProtectedRoute", () => {
     mockRefresh(() => new Promise(() => {}));
     renderRoutes(routes, { route: "/tasks" });
 
-    expect(screen.getByText("Loading tasks...")).toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
     expect(screen.queryByText("login page")).not.toBeInTheDocument();
   });
 

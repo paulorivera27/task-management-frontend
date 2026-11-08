@@ -1,8 +1,5 @@
-import {
-  PaginationButton,
-  PaginationContainer,
-} from "./styles/paginationComponent";
-import { Button } from "./styles/shared";
+import { PaginationContainer } from "./styles/paginationComponent";
+import { Button, ToggleButton } from "./styles/shared";
 import { pageWindow } from "../utils/pagination";
 import { useTranslation } from "react-i18next";
 
@@ -32,14 +29,14 @@ export default function Pagination({
             …
           </span>
         ) : (
-          <PaginationButton
+          <ToggleButton
             key={item}
             $active={item === currentPage}
             aria-current={item === currentPage ? "page" : undefined}
             onClick={() => onPageChange(item)}
           >
             {item}
-          </PaginationButton>
+          </ToggleButton>
         ),
       )}
 

@@ -29,7 +29,7 @@ export default function TaskList({
       ) : error ? (
         <p role="alert">{t(errorText(error))}</p>
       ) : !tasks.length ? (
-        <EmptyState isTaskList={true} />
+        <EmptyState message={t("tasks_list.no_tasks_message")} />
       ) : (
         tasks.map((task) => <TaskCard key={task.id} task={task} />)
       )}
