@@ -1,8 +1,14 @@
 import TaskCard from "./TaskCard";
 import type { Task } from "../types";
 import EmptyState from "./EmptyState";
+import { errorMessageKey } from "../lib/errors";
 import { useTranslation } from "react-i18next";
 import { SecondaryContainer } from "./styles/taskList";
+
+function errorText(error: Error) {
+  const key = errorMessageKey(error);
+  return key === "errors.generic" ? "tasks_list.error_loading_tasks" : key;
+}
 
 export default function TaskList({
   tasks,
@@ -20,7 +26,7 @@ export default function TaskList({
       {loading ? (
         <p>{t("tasks_list.loading_message")}</p>
       ) : error ? (
-        <p>{t("tasks_list.error_loading_tasks", { message: error.message })}</p>
+        <p role="alert">{t(errorText(error))}</p>
       ) : !tasks.length ? (
         <EmptyState isTaskList={true} />
       ) : (

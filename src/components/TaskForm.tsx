@@ -9,6 +9,7 @@ import { useState } from "react";
 import { TaskStatus } from "../types";
 import { Button } from "./styles/shared";
 import type { TaskFormProps } from "../types";
+import { taskStatuses, statusTranslationKey } from "../utils/constants";
 import { useTranslation } from "react-i18next";
 import { SecondaryContainer } from "./styles/taskList";
 
@@ -23,7 +24,7 @@ export default function TaskForm({
   const [description, setDescription] = useState(
     initialValues?.description ?? "",
   );
-  const [status, setStatus] = useState<string>(
+  const [status, setStatus] = useState<TaskStatus>(
     initialValues?.status ?? TaskStatus.PENDING,
   );
 
@@ -59,17 +60,13 @@ export default function TaskForm({
           <Select
             id="status"
             value={status}
-            onChange={(e) => setStatus(e.target.value)}
+            onChange={(e) => setStatus(e.target.value as TaskStatus)}
           >
-            <option value={TaskStatus.PENDING}>
-              {t("status_filters.pending")}
-            </option>
-            <option value={TaskStatus.IN_PROGRESS}>
-              {t("status_filters.in_progress")}
-            </option>
-            <option value={TaskStatus.COMPLETED}>
-              {t("status_filters.completed")}
-            </option>
+            {taskStatuses.map((value) => (
+              <option key={value} value={value}>
+                {t(statusTranslationKey[value])}
+              </option>
+            ))}
           </Select>
 
           <Button type="submit" disabled={loading}>
@@ -80,7 +77,7 @@ export default function TaskForm({
                 : t("task_form.create_button")}
           </Button>
 
-          {error && <ErrorText>{error}</ErrorText>}
+          {error && <ErrorText role="alert">{error}</ErrorText>}
         </FlexColumnContainer>
       </form>
     </SecondaryContainer>

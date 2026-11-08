@@ -6,7 +6,7 @@ import { GET_TASKS } from "../graphql/queries";
 import { useQuery } from "@apollo/client/react";
 import TaskFilter from "../components/TaskFilter";
 import Pagination from "../components/Pagination";
-import type { GetTasksData, Task } from "../types";
+import type { GetTasksData, Task, TaskStatus } from "../types";
 import { Button, FlexRowContainer } from "../components/styles/shared";
 import { MainContainer, PageTitle } from "../components/styles/taskList";
 
@@ -15,7 +15,7 @@ export default function IndexPage() {
   const navigate = useNavigate();
   const PER_PAGE = 10;
   const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState<string | null>(null);
+  const [filter, setFilter] = useState<TaskStatus | null>(null);
 
   const { data, loading, error } = useQuery<GetTasksData>(GET_TASKS, {
     fetchPolicy: "cache-and-network",
@@ -26,7 +26,7 @@ export default function IndexPage() {
     },
   });
 
-  const handleFilterChange = (status: string | null) => {
+  const handleFilterChange = (status: TaskStatus | null) => {
     setFilter(status);
     setPage(1);
   };

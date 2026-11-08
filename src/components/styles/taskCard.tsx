@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import type { TaskStatus } from "../../types";
 
 export const CardTitle = styled.h3`
   margin: 0 0 8px;
@@ -19,7 +20,7 @@ export const Description = styled.p`
   background: #fff;
 `;
 
-export const StatusBadge = styled.span<{ $status: string }>`
+export const StatusBadge = styled.span<{ $status: TaskStatus }>`
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 4px;

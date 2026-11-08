@@ -6,40 +6,65 @@ import {
   Description,
 } from "./styles/taskCard";
 import { TaskStatus } from "../types";
-import type { TaskItemProps } from "../types";
+import { ErrorText } from "./styles/taskForm";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@apollo/client/react";
 import { statusTranslationKey } from "../utils/constants";
 import { Button, FlexRowContainer } from "./styles/shared";
 import { DELETE_TASK, UPDATE_TASK } from "../graphql/mutations";
+import { useMutationFeedback } from "../hooks/useMutationFeedback";
+import type {
+  TaskItemProps,
+  DeleteTaskData,
+  UpdateTaskData,
+  UpdateTaskVariables,
+} from "../types";
 
 export default function TaskCard({ task }: TaskItemProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const [deleteTask, { loading: deleting }] = useMutation(DELETE_TASK, {
-    variables: { id: task.id },
-    refetchQueries: ["GetTasks"],
-    update: (cache) => {
+  const { error, run } = useMutationFeedback();
+
+  const [deleteTask, { loading: deleting }] = useMutation<
+    DeleteTaskData,
+    { id: string }
+  >(DELETE_TASK, {
+    refetchQueries: ({ data }) =>
+      data?.deleteTask.errors.length ? [] : ["GetTasks"],
+    update: (cache, { data }) => {
+      if (data?.deleteTask.errors.length) return;
       cache.evict({ id: cache.identify({ __typename: "Task", id: task.id }) });
       cache.gc();
     },
   });
-  const [updateTaskStatus, { loading: updating }] = useMutation(UPDATE_TASK);
+  const [updateTaskStatus, { loading: updating }] = useMutation<
+    UpdateTaskData,
+    UpdateTaskVariables
+  >(UPDATE_TASK, {
+    refetchQueries: ({ data }) =>
+      data?.updateTask.errors.length ? [] : ["GetTasks"],
+  });
 
-  const handleStatusChange = (newStatus: string) => {
-    updateTaskStatus({
-      variables: { id: task.id, status: newStatus },
-      refetchQueries: ["GetTasks"],
-    });
-  };
+  const handleStatusChange = (newStatus: TaskStatus) =>
+    run(
+      async () =>
+        (
+          await updateTaskStatus({
+            variables: { id: task.id, status: newStatus },
+          })
+        ).data?.updateTask,
+    );
 
   const handleDelete = () => {
     if (
       window.confirm(t("task_card.delete_confirmation", { title: task.title }))
     ) {
-      deleteTask();
+      void run(
+        async () =>
+          (await deleteTask({ variables: { id: task.id } })).data?.deleteTask,
+      );
     }
   };
 
@@ -85,6 +110,7 @@ export default function TaskCard({ task }: TaskItemProps) {
             : t("task_card.delete_action")}
         </Button>
       </Actions>
+      {error && <ErrorText role="alert">{error}</ErrorText>}
     </Card>
   );
 }
